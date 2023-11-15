@@ -23,7 +23,7 @@
         <li class="nav-item">
           <a class="nav-link anchor bookappointment"   aria-current="page" href='.appointmentForm' data-bs-target=".appointmentForm" data-bs-toggle="modal">Book-Appointment</a>
         </li>
-        <li><a class="nav-link anchor" href="#">Logout</a></li>
+        <li><a class="nav-link anchor" href="logout">Logout</a></li>
       </ul>
     </div>
   </div>
@@ -85,7 +85,7 @@
       </div>
       <div class="modal-body table-responsive">
         <table class="table table-stripted table-hover table-bordered">
-          <thead>
+          <thead class="table-dark"> 
             <tr>
               <th>first_name</th>
               <th>last_name</th>
@@ -233,7 +233,7 @@
       </div>
       <div class="modal-body table-responsive">
         <table class="table table-stripted table-hover table-bordered">
-          <thead>
+          <thead class="table-dark">
             <tr>
               <th>First_Name</th>
               <th>Last_Name</th>
@@ -260,8 +260,6 @@
   <h1 class="mt-4">Beta Hospital</h1>
   <p>Beta Hospital in Chennai has a supportive and friendly staff, and the latest medical know-how to help patients. The clinic abides by all the necessary safety protocols, including Covid-19 precautionary measures. The doctor and team offer world-class care and guidance, always putting their patients first.</p>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script>
   $(document).ready(()=>{
     updateCount_Of_Doctor_Appointments();
@@ -303,15 +301,10 @@
                   tr += '<td>'+ patient.patient_dob +'</td>'
                   tr += '<td>'+ patient.patient_age +'</td>';
                   tr += '<td>'+ patient.doctor_name +'</td>';
-                  if(patient.appointment_status === "null"){
+                  if(patient.appointment_status === null){
                     tr += '<td>'+ " " +'</td>';
                   }else{
                     tr += '<td>'+ patient.appointment_status +'</td>';
-                  }
-                  if(patient.reason === null){
-                    tr += '<td>'+ " " +'</td>';
-                  }else{
-                    tr += '<td>'+  patient.reason+'</td>';
                   }
                   tr += '</tr>';
                 });
@@ -373,8 +366,8 @@
       url:"{{url('fetchDoctorFee')}}/"+doctorname,
       type:'get',
       success:function(response){
-        // $('#doctor_id').val(response.doct_id);
-        $('#doctorfee').val(response.fee);
+        $('#doctor_id').val(response.doctor_id);
+        $('#doctor_fee').val(response.fee);
 
       }
     });

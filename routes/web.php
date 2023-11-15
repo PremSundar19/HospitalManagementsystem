@@ -30,6 +30,7 @@ Route::get('doctordashboard',[HospitalController::class,'doctorDashboard']);
 Route::get('userdashboard',[HospitalController::class,'userDashboard']);
 Route::get('hospitaldashboard',[HospitalController::class,'hospitalDashboard']);
 Route::get('doctor',[HospitalController::class,'doctor']);
+Route::get('logout',[HospitalController::class,'logout']);
 
 
 //user-related route
@@ -40,7 +41,9 @@ Route::post('loginUser',[HospitalController::class,'loginUser']);
 Route::post('bookAppointment',[AppointmentController::class,'storeAppointment']);
 Route::get('fetchAppointment',[AppointmentController::class,'fetchAppointment']);
 Route::get('countOfAppointment',[AppointmentController::class,'countOfAppointment']);
-Route::get('fetchAppointmentRelatedDoctor/{id}',[AppointmentController::class,'fetchAppointmentRelatedDoctor']);
+Route::get('/getAppointments/{doctorId}',[AppointmentController::class,'getAppointments']);
+Route::get('/updateAppointment',[AppointmentController::class,'updateAppointment']);
+Route::post('/updateFeedback',[AppointmentController::class,'updateFeedback']);
 
 //patient related routes
 Route::get('storePatient',[PatientController::class,'storePatient']);
@@ -50,5 +53,10 @@ Route::get('countOfPatient',[PatientController::class,'countOfPatient']);
 //Doctor Related Routes
 Route::post('storeDoctor',[DoctorController::class,'storeDoctor']);
 Route::get('fetchDoctor',[DoctorController::class,'fetchDoctor']);
+Route::post('updateAvailability',[DoctorController::class,'updateAvailability']);
 Route::get('countOfDoctor',[DoctorController::class,'countOfDoctor']);
 Route::get('fetchDoctorFee/{doctorname}',[DoctorController::class,'fetchDoctorFee']);
+
+
+
+

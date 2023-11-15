@@ -62,7 +62,7 @@ class HospitalController extends Controller
             $doctor = Doctor::where("email", $email)->first();
             if ($doctor) {
                 if (hash::check($password, $doctor->password)) {
-                    Session::put('user_id', $doctor->doctor_id);
+                    Session::put('doctor_id', $doctor->doctor_id);
                     return $this->doctorDashboard();
                 }
             }
@@ -71,8 +71,9 @@ class HospitalController extends Controller
             $user = HospitalUser::where("email", $email)->first();
             if ($user) {
                 if (hash::check($password, $user->password)) {
-                    Session::put('doctor_id', $user->user_id);
+                    Session::put('user_id', $user->user_id);
                     return $this->userDashboard();
+                    
                 }
             }
         }
@@ -81,8 +82,6 @@ class HospitalController extends Controller
 
     public function logout(){
         Session::flush();
-        return $this->login();
+        return redirect('login');
     }
-   
-
 }

@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+
+header("Access-Control-Allow-Origin: *");
+
 
 class AppointmentController extends Controller
 {
     public function storeAppointment(Request $request)
     {
+        // dd($request);
         $validateData = $request->validate([
             "first_name" => 'required',
             'dob' => 'required',
@@ -38,15 +43,13 @@ class AppointmentController extends Controller
         $userTime = Carbon::parse($appointmentTime);
         if (($userTime->gte($morgBreakStartTime) && $userTime->lt($morgBreakEndTime)) || ($userTime->gte($afternoonBreakStartTime) && $userTime->lt($afternoonBreakEndTime))) {
             return redirect('admindashboard')->with('message', 'Sorry, appointments are not available during break time.');
-        }
-        else if ($userTime->gte($hospitalOutTime) || $userTime->lt($hospitalInTime)) {
+        } else if ($userTime->gte($hospitalOutTime) || $userTime->lt($hospitalInTime)) {
             return redirect('admindashboard')->with('message', 'Sorry, appointments are not available before or after hospital time.');
-        }
-       else if (($userTime->gte($lunchStartTime) && $userTime->lt($lunchEndTime))) {
+        } else if (($userTime->gte($lunchStartTime) && $userTime->lt($lunchEndTime))) {
             return redirect('admindashboard')->with('message', 'Sorry, appointments are not available during lunch time.');
-        }else{
+        } else {
             $appointment = new Appointment();
-            $appointment->patient_first_name =$data['first_name'];
+            $appointment->patient_first_name = $data['first_name'];
             $appointment->patient_last_name = $data['last_name'];
             $appointment->patient_dob = $data['dob'];
             $appointment->patient_age = $data['age'];
@@ -61,8 +64,21 @@ class AppointmentController extends Controller
         }
     }
 
-    public function fetchAppointmentRelatedDoctor($doctor_id){
-            return Appointment::where('doctor_id',$doctor_id);
+    public function getAppointments($doctorId)
+    {
+        return Appointment::where('doctor_id', $doctorId)->get();
+    }
+    public function updateAppointment(Request $request)
+    {
+
+        $appointmentId = $request->appointmentId;
+        $status = $request->status;
+        $rowAffeted = DB::update('UPDATE appointment SET appointment_status=? WHERE appointment_id=?', [$status, $appointmentId]);
+        if ($rowAffeted > 0) {
+            return response()->json(array('done' => true));
+        } else {
+            return response()->json(array('done' => false));
+        }
     }
     public function fetchAppointment()
     {
@@ -72,5 +88,15 @@ class AppointmentController extends Controller
     public function countOfAppointment()
     {
         return Appointment::count();
+    }
+    public function updateFeedback(Request $request)
+    {
+        dd($request);
+        $appointmentId = $request->appointmentId;
+        $feedback = $request->feedback;
+        $rowAffected = DB::update('UPDATE appointment SET feedback=? WHERE appointment_id=?', [$feedback, $appointmentId]);
+        if ($rowAffected > 0) {
+            return redirect('doctordashboard')->with('message', 'Feedback updated Successfully');
+        }
     }
 }
