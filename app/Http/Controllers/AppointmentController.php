@@ -70,7 +70,6 @@ class AppointmentController extends Controller
     }
     public function updateAppointment(Request $request)
     {
-
         $appointmentId = $request->appointmentId;
         $status = $request->status;
         $rowAffeted = DB::update('UPDATE appointment SET appointment_status=? WHERE appointment_id=?', [$status, $appointmentId]);
@@ -89,14 +88,14 @@ class AppointmentController extends Controller
     {
         return Appointment::count();
     }
-    public function updateFeedback(Request $request)
+    public function updateFeedback(Request $request, $appointmentId, $feedback)
     {
-        dd($request);
-        $appointmentId = $request->appointmentId;
-        $feedback = $request->feedback;
         $rowAffected = DB::update('UPDATE appointment SET feedback=? WHERE appointment_id=?', [$feedback, $appointmentId]);
         if ($rowAffected > 0) {
-            return redirect('doctordashboard')->with('message', 'Feedback updated Successfully');
+            return response()->json(array('done' => true));
+        } else {
+            return response()->json(array('done' => false));
         }
+            // return redirect('doctordashboard')->with('message', 'Feedback updated successfully');
     }
 }

@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row justify-content-center">
         @if(Session::has('message'))
-        <div class="alert alert-success justify-content-center" role="alert">
+        <div class="alert alert-success justify-content-center" id="msg" role="alert">
           {{ Session::get('message') }}
         </div>
         <script>
@@ -24,13 +24,15 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link anchor" aria-current="page" href="#">Patient status</a>
+            <!-- <a class="nav-link anchor" aria-current="page" href="#">Patient status</a> -->
           </li>
           <li class="nav-item">
             <a class="nav-link anchor" href="#">Hospital-info</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link anchor" data-bs-target="#availabilityModal" data-bs-toggle="modal">availability</a>
+            <a class="nav-link anchor" href="logout">Logout</a>
+            <!-- <a class="nav-link anchor" data-bs-target="#availabilityModal" data-bs-toggle="modal">availability</a> -->
+
           </li>
 
           <li class="nav-item">
@@ -79,9 +81,9 @@
       <div class="col-md-4">
         <div class="card  bg-info">
           <div class="card-body">
-            <h5 class="card-title">Appointments</h5>
-            <p class="card-text">Upcoming Appointments: 50</p>
-            <button type="button" class="btn btn-primary ListOfAppointments" data-bs-toggle="modal" data-bs-target=".appointments">View Details</button>
+            <h5 class="card-title">Update Availablity</h5>
+            <p class="card-text"> &nbsp;</p>
+            <button type="button" class="btn btn-primary ListOfAppointments" data-bs-target="#availabilityModal" data-bs-toggle="modal">View Details</button>
           </div>
         </div>
       </div>
@@ -99,7 +101,7 @@
     </div>
   </div>
   <!-- patientmodal -->
-  <div class="modal fade modal-lg" id="patientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade modal-lg" id="patientModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -135,11 +137,11 @@
   </div>
 
   <!-- appointmentModal -->
-  <div class="modal fade modal-lg" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade modal-lg" id="appointmentModal" tabindex="-1" role="dialog" aria-labelledby="apppointment" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title black" id="exampleModalLabel">Appointments</h5>
+          <h5 class="modal-title black" id="apppointment">Appointments</h5>
           <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -167,7 +169,7 @@
     </div>
   </div>
   <!-- doctor Availability -->
-  <div class="modal fade" id="availabilityModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="availabilityModal" tabindex="-1" role="dialog" aria-labelledby="doctorModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -261,6 +263,7 @@
       $.each(appointments, function(index, appointment) {
         $('#doctor_name').val(appointment.doctor_name);
         $('#doctor_id').val(appointment.doctor_id);
+
         tr += '<tr>';
         tr += '<td>' + appointment.patient_first_name + '</td>';
         if (appointment.patient_last_name === null) {
@@ -282,40 +285,36 @@
       $('.appointments_data').append(tr);
     }
 
-    function updateReason(appointmentId) {
-      var feedbackSelector = 'input[appointmentId="' + appointmentId + '"]';
-      var feedback = $(feedbackSelector).val();
-      $.ajax({
-        url: "{{url('updateFeedback')}}",
-        type: 'POST',
-        data: {
-          appointmentId: appointmentId,
-          feedback: feedback
-        }
-      })
-    }
 
     function displayPatients(appointments) {
       $('.patients_data').empty();
       var tr = '';
       $.each(appointments, function(index, appointment) {
-        tr += '<tr>';
-        tr += '<td>' + appointment.patient_first_name + '</td>';
-        if (appointment.patient_last_name === null) {
-          tr += '<td>' + " " + '</td>';
-        } else {
-          tr += '<td>' + appointment.patient_last_name + '</td>';
+        if (appointment.appointment_status === "accepted") {
+          tr += '<tr>';
+          tr += '<td>' + appointment.patient_first_name + '</td>';
+          if (appointment.patient_last_name === null) {
+            tr += '<td>' + " " + '</td>';
+          } else {
+            tr += '<td>' + appointment.patient_last_name + '</td>';
+          }
+          tr += '<td>' + appointment.patient_dob + '</td>';
+          tr += '<td>' + appointment.patient_age + '</td>';
+          tr += '<td>' + appointment.patient_mobile + '</td>';
+          tr += '<td>' + appointment.appointment_date + '</td>';
+          tr += '<td>' + appointment.appointment_time + '</td>';
+          if (appointment.feedback === null) {
+            tr += '<td>' + '<input type="text" name="feedback" appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
+          } else {
+            tr += '<td>' + appointment.feedback + '</td>';
+          }
+          if (appointment.feedback === null) {
+            tr += '<td><div class="d-flex">';
+            tr += '<a class="btn btn-success  btn-xs py-0" onclick=updateReason("' + appointment.appointment_id + '")>submit</a>';
+            tr += '</div></td>';
+          }
+          tr += '</tr>';
         }
-        tr += '<td>' + appointment.patient_dob + '</td>';
-        tr += '<td>' + appointment.patient_age + '</td>';
-        tr += '<td>' + appointment.patient_mobile + '</td>';
-        tr += '<td>' + appointment.appointment_date + '</td>';
-        tr += '<td>' + appointment.appointment_time + '</td>';
-        tr += '<td>' + '<input type="text" name="feedback" appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
-        tr += '<td><div class="d-flex">';
-        tr += '<a class="btn btn-success  btn-xs py-0" onclick=updateReason("' + appointment.appointment_id + '")>submit</a>';
-        tr += '</div></td>';
-        tr += '</tr>';
       });
       $('.patients_data').append(tr);
     }
@@ -334,6 +333,26 @@
             listOfAppointments();
           }
         }
+      });
+    }
+
+    function updateReason(appointmentId) {
+
+      var feedbackSelector = 'input[appointmentId="' + appointmentId + '"]';
+      var feedback = $(feedbackSelector).val();
+      $.ajax({
+        url: '/updateFeedback/' + appointmentId + '/' + feedback,
+        type: 'POST',
+        dataType: 'json',
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(response) {
+          if (response.done) {
+            listOfAppointments();
+          }
+        },
+        error: function(error) {}
       });
     }
   </script>

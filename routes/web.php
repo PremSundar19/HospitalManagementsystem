@@ -43,7 +43,7 @@ Route::get('fetchAppointment',[AppointmentController::class,'fetchAppointment'])
 Route::get('countOfAppointment',[AppointmentController::class,'countOfAppointment']);
 Route::get('/getAppointments/{doctorId}',[AppointmentController::class,'getAppointments']);
 Route::get('/updateAppointment',[AppointmentController::class,'updateAppointment']);
-Route::post('/updateFeedback',[AppointmentController::class,'updateFeedback']);
+Route::post('/updateFeedback/{appointmentId}/{feedback}', [AppointmentController::class, 'updateFeedback']);
 
 //patient related routes
 Route::get('storePatient',[PatientController::class,'storePatient']);
