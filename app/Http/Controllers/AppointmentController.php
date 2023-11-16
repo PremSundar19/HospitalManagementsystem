@@ -40,13 +40,20 @@ class AppointmentController extends Controller
 
         $appointmentTime = $data['appointment_time'];
 
+        $docId = $data['doctor_id'];
+        $date =  $data['appointment_date'];
+
+       $doctor =  DB::select('SELECT * FROM doctor where doctor_id=?',[$docId]);
+       if($doctor[0]->date_of_not_availability === $date){
+        return redirect('appointment')->with('message', 'Sorry, Doctor are not available,please select another date.');
+       }
         $userTime = Carbon::parse($appointmentTime);
         if (($userTime->gte($morgBreakStartTime) && $userTime->lt($morgBreakEndTime)) || ($userTime->gte($afternoonBreakStartTime) && $userTime->lt($afternoonBreakEndTime))) {
-            return redirect('admindashboard')->with('message', 'Sorry, appointments are not available during break time.');
+            return redirect('appointment')->with('message', 'Sorry, appointments are not available during break time.');
         } else if ($userTime->gte($hospitalOutTime) || $userTime->lt($hospitalInTime)) {
-            return redirect('admindashboard')->with('message', 'Sorry, appointments are not available before or after hospital time.');
+            return redirect('appointment')->with('message', 'Sorry, appointments are not available before or after hospital time.');
         } else if (($userTime->gte($lunchStartTime) && $userTime->lt($lunchEndTime))) {
-            return redirect('admindashboard')->with('message', 'Sorry, appointments are not available during lunch time.');
+            return redirect('appointment')->with('message', 'Sorry, appointments are not available during lunch time.');
         } else {
             $appointment = new Appointment();
             $appointment->patient_first_name = $data['first_name'];
@@ -60,7 +67,7 @@ class AppointmentController extends Controller
             $appointment->doctor_fee = $data['doctor_fee'];
             $appointment->patient_mobile = $data['patient_mobile'];
             $appointment->save();
-            return redirect('admindashboard')->with('message', 'Appointment Booked Successfully');
+            return redirect('admindashboard')->with('appointmentMessage', 'Appointment Booked Successfully');
         }
     }
 

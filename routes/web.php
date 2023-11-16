@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 //form or view related routes
 Route::get('register',[HospitalController::class,'register']);
-Route::get('login',[HospitalController::class,'login']);
+// Route::get('login',[HospitalController::class,'login']);
 Route::get('admindashboard',[HospitalController::class,'adminDashboard']);
 Route::get('doctordashboard',[HospitalController::class,'doctorDashboard']);
 Route::get('userdashboard',[HospitalController::class,'userDashboard']);
@@ -57,6 +57,11 @@ Route::post('updateAvailability',[DoctorController::class,'updateAvailability'])
 Route::get('countOfDoctor',[DoctorController::class,'countOfDoctor']);
 Route::get('fetchDoctorFee/{doctorname}',[DoctorController::class,'fetchDoctorFee']);
 
+Route::get('/aboutus',function(){
+    return view('hospital.aboutus');
+});
 
-
+Route::get('/appointment',function(){
+    return view('hospital.appointment');
+});
 

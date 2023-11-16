@@ -28,7 +28,6 @@ class UserController extends Controller
         $user->mobile = $request->mobile;
         $user->password = Hash::make($request->password);
         $user->save();
-        return redirect('login');
+        return redirect('register')->with('message', 'Registration successfully!');
     }
-    
 }
