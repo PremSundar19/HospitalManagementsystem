@@ -51,4 +51,8 @@ class DoctorController extends Controller
         $rowAffected = DB::update('UPDATE doctor SET availability=?,date_of_not_availability=? WHERE doctor_id=?',['not available',$date,$doctorId]);
         return redirect('doctordashboard')->with('message', 'Availability Updated Successfully');
     }
+
+    public function fetchDoctorBasedOnSpecilization($specilization) {
+        return DB::select('SELECT doctor_name FROM doctor WHERE specilization=?',[$specilization]);
+    }
 }

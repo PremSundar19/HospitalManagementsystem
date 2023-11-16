@@ -7,14 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-header("Access-Control-Allow-Origin: *");
-
 
 class AppointmentController extends Controller
 {
     public function storeAppointment(Request $request)
     {
-        // dd($request);
         $validateData = $request->validate([
             "first_name" => 'required',
             'dob' => 'required',
@@ -43,10 +40,10 @@ class AppointmentController extends Controller
         $docId = $data['doctor_id'];
         $date =  $data['appointment_date'];
 
-       $doctor =  DB::select('SELECT * FROM doctor where doctor_id=?',[$docId]);
-       if($doctor[0]->date_of_not_availability === $date){
-        return redirect('appointment')->with('message', 'Sorry, Doctor are not available,please select another date.');
-       }
+        $doctor =  DB::select('SELECT * FROM doctor where doctor_id=?', [$docId]);
+        if ($doctor[0]->date_of_not_availability === $date) {
+            return redirect('appointment')->with('message', 'Sorry, Doctor are not available,please select another date.');
+        }
         $userTime = Carbon::parse($appointmentTime);
         if (($userTime->gte($morgBreakStartTime) && $userTime->lt($morgBreakEndTime)) || ($userTime->gte($afternoonBreakStartTime) && $userTime->lt($afternoonBreakEndTime))) {
             return redirect('appointment')->with('message', 'Sorry, appointments are not available during break time.');
@@ -55,19 +52,35 @@ class AppointmentController extends Controller
         } else if (($userTime->gte($lunchStartTime) && $userTime->lt($lunchEndTime))) {
             return redirect('appointment')->with('message', 'Sorry, appointments are not available during lunch time.');
         } else {
-            $appointment = new Appointment();
-            $appointment->patient_first_name = $data['first_name'];
-            $appointment->patient_last_name = $data['last_name'];
-            $appointment->patient_dob = $data['dob'];
-            $appointment->patient_age = $data['age'];
-            $appointment->appointment_date = $data['appointment_date'];
-            $appointment->appointment_time = $appointmentTime;
-            $appointment->doctor_id = $data['doctor_id'];
-            $appointment->doctor_name = $data['doctor_name'];
-            $appointment->doctor_fee = $data['doctor_fee'];
-            $appointment->patient_mobile = $data['patient_mobile'];
-            $appointment->save();
-            return redirect('admindashboard')->with('appointmentMessage', 'Appointment Booked Successfully');
+
+            $appointment = [
+                'patient_first_name' => $data['first_name'],
+                'patient_last_name' => $data['last_name'],
+                'patient_dob' => $data['dob'],
+                'patient_age' => $data['age'],
+                'appointment_date' => $data['appointment_date'],
+                'appointment_time' => $appointmentTime,
+                'doctor_id' => $data['doctor_id'],
+                'doctor_name' => $data['doctor'],
+                'doctor_fee' => $data['doctor_fee'],
+                'patient_mobile' => $data['patient_mobile'],
+            ];
+
+            DB::table('appointment')->insert($appointment);
+
+            // $appointment = new Appointment();
+            // $appointment->patient_first_name = $data['first_name'];
+            // $appointment->patient_last_name = $data['last_name'];
+            // $appointment->patient_dob = $data['dob'];
+            // $appointment->patient_age = $data['age'];
+            // $appointment->appointment_date = $data['appointment_date'];
+            // $appointment->appointment_time = $appointmentTime;
+            // $appointment->doctor_id = $data['doctor_id'];
+            // $appointment->doctor_name = $data['doctor'];
+            // $appointment->doctor_fee = $data['doctor_fee'];
+            // $appointment->patient_mobile = $data['patient_mobile'];
+            // $appointment->save();
+            return redirect('appointment')->with('message', 'Appointment Booked Successfully');
         }
     }
 
@@ -103,6 +116,8 @@ class AppointmentController extends Controller
         } else {
             return response()->json(array('done' => false));
         }
-            // return redirect('doctordashboard')->with('message', 'Feedback updated successfully');
     }
+    public function fetchdoctorName($date){
+        return DB::select('SELECT doctor_name FROM appointment WHERE appointment_date=?',[$date]);
+     }
 }

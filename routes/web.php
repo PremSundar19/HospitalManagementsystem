@@ -56,6 +56,7 @@ Route::get('fetchDoctor',[DoctorController::class,'fetchDoctor']);
 Route::post('updateAvailability',[DoctorController::class,'updateAvailability']);
 Route::get('countOfDoctor',[DoctorController::class,'countOfDoctor']);
 Route::get('fetchDoctorFee/{doctorname}',[DoctorController::class,'fetchDoctorFee']);
+Route::get('/fetchDoctorBasedOnSpecilization/{specilization}',[DoctorController::class,'fetchDoctorBasedOnSpecilization']);
 
 Route::get('/aboutus',function(){
     return view('hospital.aboutus');
@@ -65,3 +66,9 @@ Route::get('/appointment',function(){
     return view('hospital.appointment');
 });
 
+
+Route::get('/demo',function(){
+   return view('demo');
+});
+
+Route::get('/fetchdoctorName/{date}',[AppointmentController::class,'fetchdoctorName']);

@@ -13,6 +13,7 @@
           setTimeout(function() {
             var alert = document.querySelector('.alert');
             alert.style.display = 'none';
+            window.location.href = '/admindashboard';
           }, 4000);
         </script>
         @endif
@@ -69,10 +70,30 @@
             </div>
           </div>
           <div class="row">
+          <div class="col-md-6">
+            <label for="Specialists">Specialists</label>
+            <select name="Specialists" id="Specialists" class="form-select">
+              <option>Choose...</option>
+              <option value="Cardiologists">Cardiologists</option>
+              <option value="Dermatologists">Dermatologists (Skin Specialists)</option>
+              <option value="Neurologists">Neurologists (Nervous System Specialists)</option>
+              <option value="Oncologists">Oncologists (Cancer Specialists)</option>
+              <option value="Orthopedic Surgeons">Orthopedic Surgeons (Bone and Joint Specialists)</option>
+              <option value="Pulmonologists">Pulmonologists (Lung Specialists)</option>
+              <option value="Nephrologists">Nephrologists (Kidney Specialists)</option>
+            </select>
+          </div>
+          <div class="col-md-6 d" style="display: none;">
+          <label for="doctor_name">Doctor name</label>
+            <select name="doctor_name" id="doctor_name" class="form-select displayDoctors" >
+            </select>
+          </div>
+          </div>
+        
+          <!-- <div class="row">
             <div class="col-md-6">
               <label for="doctor" class="form-label">Doctor</label>
               <select name="doctor" id="dr" class="form-select doctorContent  @error('doctor') is-invalid @enderror" value="{{old('doctor') ? : ''}}">
-
               </select>
               @error('doctor')
               <span class="text-danger">{{$message}}</span>
@@ -85,7 +106,7 @@
               <span class="text-danger">{{$message}}</span>
               @enderror
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label for="patient_mobile" class="form-label"> Mobile </label>
             <input type="text" name="patient_mobile" id="patient_mobile" class="form-control  @error('patient_mobile') is-invalid @enderror" value="{{old('patient_mobile') ? : ''}}">
@@ -142,16 +163,56 @@
           }
         });
       });
+      $('#Specialists').on('change',function(){
+        var specilization = $('select#Specialists option:selected').text();
+       console.log(specilization);
+       $.ajax({
+           url:'/fetchDoctorBasedOnSpecilization/' + specilization,
+           type:'GET',
+           dataType:'json',
+           success:function(response){
+            console.log(response);
+               $('.displayDoctors').empty();
+          var option = '';
+          option += '<option>Choose..</option>';
+          $.each(response, function(index, doctor) {
+            
+            option += '<option value=' + doctor.doctor_name + '>' + doctor.doctor_name + '</option>';
+          });
+          $('.displayDoctors').append(option);
+          $('.d').show();
+           }
+       });
+       var now = new Date();
+       var yy = now.getFullYear();
+       var m = now.getMonth();
+       var d = now.getDate();
+
+       var date = yy + '-'+ m + '-' + d;
+       
+
+       console.log(date);
+      $.ajax({
+        url:'/fetchdoctorName/' + date,
+        type:'GET',
+        dataType:'json',
+        success:function(response){
+           console.log(response);
+        }
+      });
+      });
+      
       $('#appointment_time').on('change', () => {
         var selectedTime = $('#appointment_time').val();
+        var selectedDate = new Date($('#appointment_date').val());
         var now = new Date();
         var hours = now.getHours().toString().padStart(2, '0');
         var minutes = now.getMinutes().toString().padStart(2, '0');
         var currentTime = hours + ':' + minutes;
-        if (selectedTime < currentTime) {
+        if ((selectedTime < currentTime) && now.getDate() === selectedDate.getDate()) {
           $('#appointment_timeError').text('* Please select proper time');
           $('#appointment_time').val('');
-        }else{
+        } else {
           $('#appointment_timeError').text('');
         }
       });
