@@ -5,6 +5,7 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\UserController;
+use App\Models\Doctor;
 use App\Models\HospitalUser;
 use Illuminate\Support\Facades\Route;
 
@@ -23,13 +24,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 //form or view related routes
-Route::get('register',[HospitalController::class,'register']);
+// Route::get('register',[HospitalController::class,'register']);
 // Route::get('login',[HospitalController::class,'login']);
 Route::get('admindashboard',[HospitalController::class,'adminDashboard']);
 Route::get('doctordashboard',[HospitalController::class,'doctorDashboard']);
-Route::get('userdashboard',[HospitalController::class,'userDashboard']);
-Route::get('hospitaldashboard',[HospitalController::class,'hospitalDashboard']);
-Route::get('doctor',[HospitalController::class,'doctor']);
+// Route::get('userdashboard',[HospitalController::class,'userDashboard']);
+Route::get('index',[HospitalController::class,'index']);
+Route::get('register',[HospitalController::class,'register']);
 Route::get('logout',[HospitalController::class,'logout']);
 
 
@@ -46,8 +47,8 @@ Route::get('/updateAppointment',[AppointmentController::class,'updateAppointment
 Route::post('/updateFeedback/{appointmentId}/{feedback}', [AppointmentController::class, 'updateFeedback']);
 
 //patient related routes
-Route::get('storePatient',[PatientController::class,'storePatient']);
-Route::get('fetchPatient',[PatientController::class,'fetchPatient']);
+// Route::get('storePatient',[PatientController::class,'storePatient']);
+// Route::get('fetchPatient',[PatientController::class,'fetchPatient']);
 Route::get('countOfPatient',[PatientController::class,'countOfPatient']);
 
 //Doctor Related Routes
@@ -67,8 +68,10 @@ Route::get('/appointment',function(){
 });
 
 
-Route::get('/demo',function(){
-   return view('demo');
-});
+// Route::get('/demo',function(){
+//    return view('demo');
+// });
 
 Route::get('/fetchdoctorName/{date}',[AppointmentController::class,'fetchdoctorName']);
+Route::get('/fetchdoctorNameStatus/{date}',[DoctorController::class,'fetchdoctorNameStatus']);
+// Route::get('/updateDoctorStatus/{appointmentId}',[DoctorController::class,'updateDoctorStatus']);

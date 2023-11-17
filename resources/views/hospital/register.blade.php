@@ -74,7 +74,6 @@
                         <br>
                         <div class="form-group">
                             <input type="submit" value="Register" class="btn btn-primary btn-xs py-1">
-                            <!-- <button type="button" class="btn btn-secondary btn-xs py-1">Close</button> -->
                         </div>
                     </form>
                 </div>

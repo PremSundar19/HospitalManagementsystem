@@ -6,20 +6,23 @@
     <div class="row justify-content-center">
       <div class="col-md-5">
         @if(Session::has('message'))
-        <div class="alert alert-success justify-content-center" id="msg" role="alert">
+        <div class="alert alert-{{Session::get('class')}} justify-content-justify" role="alert">
           {{ Session::get('message') }}
         </div>
         <script>
           setTimeout(function() {
             var alert = document.querySelector('.alert');
             alert.style.display = 'none';
-            window.location.href = '/admindashboard';
+            var status = "{{session::get('status')}}";
+            if (status) {
+              window.location.href = '/admindashboard';
+            }
           }, 4000);
         </script>
         @endif
         <form action="{{url('bookAppointment')}}" class="appointmentform black" method="post">
           @csrf
-          <h5 class="Appointmenttitle">Appointment Form</h5>
+          <h5 class="Appointmenttitle">New Patient Appointment Form</h5>
           <div class="row">
             <input type="hidden" name="doctor_id" id="doctor_id">
             <div class="col-md-6">
@@ -70,43 +73,27 @@
             </div>
           </div>
           <div class="row">
-          <div class="col-md-6">
-            <label for="Specialists">Specialists</label>
-            <select name="Specialists" id="Specialists" class="form-select">
-              <option>Choose...</option>
-              <option value="Cardiologists">Cardiologists</option>
-              <option value="Dermatologists">Dermatologists (Skin Specialists)</option>
-              <option value="Neurologists">Neurologists (Nervous System Specialists)</option>
-              <option value="Oncologists">Oncologists (Cancer Specialists)</option>
-              <option value="Orthopedic Surgeons">Orthopedic Surgeons (Bone and Joint Specialists)</option>
-              <option value="Pulmonologists">Pulmonologists (Lung Specialists)</option>
-              <option value="Nephrologists">Nephrologists (Kidney Specialists)</option>
-            </select>
-          </div>
-          <div class="col-md-6 d" style="display: none;">
-          <label for="doctor_name">Doctor name</label>
-            <select name="doctor_name" id="doctor_name" class="form-select displayDoctors" >
-            </select>
-          </div>
-          </div>
-        
-          <!-- <div class="row">
             <div class="col-md-6">
-              <label for="doctor" class="form-label">Doctor</label>
-              <select name="doctor" id="dr" class="form-select doctorContent  @error('doctor') is-invalid @enderror" value="{{old('doctor') ? : ''}}">
+              <label for="Specialists">Specialists</label>
+              <select name="Specialists" id="Specialists" class="form-select">
+                <option>Choose...</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Dermatology">Dermatology</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Psychiatry">Psychiatry</option>
+                <option value="Endocrinologist">Endocrinologist</option>
+                <option value="Accident and emergency medicine">Accident and emergency medicine</option>
+                <option value="Dentist">Dentist</option>
+                <option value="Immunology">Immunology</option>
               </select>
-              @error('doctor')
-              <span class="text-danger">{{$message}}</span>
-              @enderror
             </div>
-            <div class="col-md-6">
-              <label for="doctor_fee" class="form-label">Doctor Fee</label>
-              <input type="text" name="doctor_fee" id="doctor_fee" class="form-control  @error('doctor_fee') is-invalid @enderror" value="{{old('doctor_fee') ? : ''}}" readonly>
-              @error('doctor_fee')
-              <span class="text-danger">{{$message}}</span>
-              @enderror
+            <div class="col-md-6 d" style="display: none;">
+              <label for="doctor_name">Doctor name</label>
+              <select name="doctor_name" id="doctor_name" class="form-select displayDoctors">
+              </select>
             </div>
-          </div> -->
+          </div>
           <div class="form-group">
             <label for="patient_mobile" class="form-label"> Mobile </label>
             <input type="text" name="patient_mobile" id="patient_mobile" class="form-control  @error('patient_mobile') is-invalid @enderror" value="{{old('patient_mobile') ? : ''}}">
@@ -128,94 +115,84 @@
       $('#appointment_date').on('change', () => {
         var appointmentDate = new Date($('#appointment_date').val());
         var today = new Date();
-        if ((appointmentDate.getDate() < today.getDate()) || (appointmentDate.getMonth() < today.getMonth()) || (appointmentDate.getFullYear() < today.getFullYear())) {
+        if ((appointmentDate.getMonth() === today.getMonth() && appointmentDate.getDate() < today.getDate()) || (appointmentDate.getFullYear() === today.getFullYear() && appointmentDate.getMonth() < today.getMonth()) || (appointmentDate.getFullYear() < today.getFullYear())) {
           $('#appointment_date').val('');
           $('#appointment_dateError').text('* Please select proper date');
         } else {
           $('#appointment_dateError').text('');
         }
+
       });
       $('#dob').on('change', () => {
         calculateAge('#dob', '#age', '#dobError');
       });
-      $.ajax({
-        type: 'get',
-        url: "{{url('fetchDoctor')}}",
-        success: function(response) {
-          $('.doctorContent').empty();
-          var option = '';
-          option += '<option>Choose..</option>';
-          $.each(response, function(index, doctor) {
-            option += '<option value=' + doctor.doctor_name + '>' + doctor.doctor_name + '</option>';
-          });
-          $('.doctorContent').append(option);
-        }
-      });
-      $('#dr').on('change', function() {
-        var doctorname = $('select#dr option:selected').text();
+      $('#doctor_name').on('change', function() {
+        var doctorname = $('select#doctor_name option:selected').text();
         $.ajax({
           url: "{{url('fetchDoctorFee')}}/" + doctorname,
           type: 'get',
           success: function(response) {
             $('#doctor_id').val(response.doctor_id);
-            $('#doctor_fee').val(response.fee);
-
           }
         });
       });
-      $('#Specialists').on('change',function(){
+      $('#Specialists').on('change', function() {
         var specilization = $('select#Specialists option:selected').text();
-       console.log(specilization);
-       $.ajax({
-           url:'/fetchDoctorBasedOnSpecilization/' + specilization,
-           type:'GET',
-           dataType:'json',
-           success:function(response){
-            console.log(response);
-               $('.displayDoctors').empty();
-          var option = '';
-          option += '<option>Choose..</option>';
-          $.each(response, function(index, doctor) {
-            
-            option += '<option value=' + doctor.doctor_name + '>' + doctor.doctor_name + '</option>';
-          });
-          $('.displayDoctors').append(option);
-          $('.d').show();
-           }
-       });
-       var now = new Date();
-       var yy = now.getFullYear();
-       var m = now.getMonth();
-       var d = now.getDate();
+        console.log(specilization);
+        $.ajax({
+          url: '/fetchDoctorBasedOnSpecilization/' + specilization,
+          type: 'GET',
+          dataType: 'json',
+          success: function(response) {
+            $('.displayDoctors').empty();
+            var option = '';
+            option += '<option>Choose..</option>';
+            $.each(response, function(index, doctor) {
+              option += '<option value=' + doctor.doctor_name + '>' + doctor.doctor_name + '</option>';
+            });
 
-       var date = yy + '-'+ m + '-' + d;
-       
+            $('.displayDoctors').append(option);
+            $('.d').show();
+          }
+        });
+      });
+      $('#doctor_name').click(() => {
+        var now = new Date($('#appointment_date').val());
+        var m = now.getMonth() + 1;
+        var date = now.getFullYear() + '-' + m + '-' + now.getDate();
+        $.ajax({
+          url: '/fetchdoctorName/' + date,
+          type: 'GET',
+          dataType: 'json',
+          success: function(response) {
+            $('#doctor_name option').each(function() {
+              var doctorName = $(this).val();
+              var matchingDoctor = response.find(doctor => doctorName === doctor.doctor_name && doctor.status === 1);
+              if (matchingDoctor) {
+                $(this).addClass("red");
+              } else {
+                $(this).addClass("green");
+              }
+            });
+          }
+        });
+      });
 
-       console.log(date);
-      $.ajax({
-        url:'/fetchdoctorName/' + date,
-        type:'GET',
-        dataType:'json',
-        success:function(response){
-           console.log(response);
-        }
-      });
-      });
-      
-      $('#appointment_time').on('change', () => {
-        var selectedTime = $('#appointment_time').val();
-        var selectedDate = new Date($('#appointment_date').val());
-        var now = new Date();
-        var hours = now.getHours().toString().padStart(2, '0');
-        var minutes = now.getMinutes().toString().padStart(2, '0');
-        var currentTime = hours + ':' + minutes;
-        if ((selectedTime < currentTime) && now.getDate() === selectedDate.getDate()) {
-          $('#appointment_timeError').text('* Please select proper time');
-          $('#appointment_time').val('');
-        } else {
-          $('#appointment_timeError').text('');
-        }
-      });
+
+    //   $('#appointment_time').on('change', () => {
+    //     var selectedTime = $('#appointment_time').val();
+    //     var selectedDate = new Date($('#appointment_date').val());
+    //     var now = new Date();
+    //     var hours = now.getHours().toString().padStart(2, '0');
+    //     var minutes = now.getMinutes().toString().padStart(2, '0');
+    //     var currentTime = hours + ':' + minutes;
+    //     if ((selectedTime < currentTime) && now.getDate() === selectedDate.getDate()) {
+    //       $('#appointment_timeError').text('* Please select proper time');
+    //       $('#appointment_time').val('');
+    //     } else {
+    //       $('#appointment_timeError').text('');
+    //     }
+    //   });
     });
   </script>
 </body>

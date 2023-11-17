@@ -25,13 +25,13 @@ class HospitalController extends Controller
     {
         return view('hospital.doctordashboard');
     }
-    public function hospitalDashboard()
+    public function index()
     {
-        return view('hospital.hospitaldashboard');
+        return view('hospital.index');
     }
     public function register()
     {
-        return view('hospital.register');
+        return view('hospital.doctorRegister');
     }
     public function login()
     {
@@ -52,7 +52,7 @@ class HospitalController extends Controller
         $password = $request->password;
         $type = $request->type;
         if ($type === "Choose..") {
-            return redirect('login')->with('message', 'Choose valid type');
+            return redirect('index')->with('message', 'Choose valid type');
         }
 
         if ($type === "Admin" && $email === "admin123@gmail.com" && $password === "Admin@123") {
@@ -77,7 +77,7 @@ class HospitalController extends Controller
                 }
             }
         }
-        return redirect('login')->with('message', 'Login credentials Wrong');
+        return redirect('index')->with('message', 'Login credentials Wrong');
     }
 
     public function logout(){

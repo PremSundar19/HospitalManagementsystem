@@ -34,12 +34,12 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                            <label for="type" class="form-label"> Type </label>
+                            <label for="type" class="form-label">Login Type </label>
                             <select name="type" id="type" class="form-select  @error('type') is-invalid @enderror">
                                 <option>Choose..</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Doctor">Doctor</option>
-                                <option value="User">User</option>
+                                <!-- <option value="User">User</option> -->
                             </select>
                             @error('type')
                             <span class="text-danger">{{$message}}</span>

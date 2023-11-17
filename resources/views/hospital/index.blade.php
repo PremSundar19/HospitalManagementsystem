@@ -22,9 +22,9 @@
                         <a class="nav-link" href="{{url('aboutus')}}">aboutus</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            More
-                        </a>
+                        <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
+                        <!-- More -->
+                        <!-- </a> -->
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" href="#">Profile</a></li>
                             <li><a class="dropdown-item" href="#">Edit Profile</a></li>
@@ -44,21 +44,32 @@
     <div class="container right">
         <div class="row">
             <div class="col-lg-4">
+                @if(Session::has('message'))
+                <div class="alert alert-danger justify-content-justify" role="alert">
+                    {{ Session::get('message') }}
+                </div>
+                <script>
+                    setTimeout(function() {
+                        var alert = document.querySelector('.alert');
+                        alert.style.display = 'none';
+                    }, 4000);
+                </script>
+                @endif
                 <div class="form">
                     <form action="{{url('loginUser')}}" class="actualform black" method="post">
-                        
+
                         @csrf
                         <h5>Login Form</h5>
                         <div class="form-group">
                             <label for="email" class="form-label"> Email </label>
-                            <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror">
+                            <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" value="{{old('email') ? : ''}}">
                             @error('email')
                             <span class="text-danger">{{$message}}</span>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label for="password" class="form-label"> Password </label>
-                            <input type="password" name="password" id="password" class="form-control  @error('password') is-invalid @enderror">
+                            <input type="password" name="password" id="password" class="form-control  @error('password') is-invalid @enderror" value="{{old('password') ? : ''}}">
                             @error('password')
                             <span class="text-danger">{{$message}}</span>
                             @enderror
@@ -69,7 +80,6 @@
                                 <option>Choose..</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Doctor">Doctor</option>
-                                <option value="User">User</option>
                             </select>
                             @error('type')
                             <span class="text-danger">{{$message}}</span>
@@ -77,15 +87,15 @@
                         </div>
                         <br>
                         <div class="form-group">
-                        <input type="submit" value="Login" class="btn btn-primary btn-xs py-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span style="left: 50px;">Not a member? <a href="{{url('register')}}">Sign up </a></span>
+                            <input type="submit" value="Login" class="btn btn-primary btn-xs py-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style="left: 50px;">Not a member? <a href="{{url('register')}}">Sign up </a></span>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- <div class="container mt-5">
         <div class="col-md-7">
             <div class="card black">

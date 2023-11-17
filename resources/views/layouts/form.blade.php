@@ -25,7 +25,13 @@
             height: 100%;
             color: white;
         }
-
+        .red{
+            color: red; 
+        }
+        
+        .green{
+            color: green; 
+        }
         .admindashboard {
             background-image: url('image/6f6c1538b050072b002dbc06bedaaf90.jpg');
         }
@@ -43,7 +49,14 @@
         }
 
         .registerbc {
-            background-image: url('image/purple-background-registration.png');
+            /* body { */
+            background-color: #f0f0f0; /* Use the color code or name you prefer */
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif; /* Set a default font for the page */
+        /* } */
+
+            /* background-image: url('image/purple-background-registration.png'); */
         }
 
         .anchor {

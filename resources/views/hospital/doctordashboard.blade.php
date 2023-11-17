@@ -1,7 +1,7 @@
 @extends('layouts.form')
 @section('content')
 
-<body class="dashboard doctordashboard">
+<body class="dashboard admindashboard">
   @csrf
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top ">
     <div class="row anchor">
@@ -27,7 +27,7 @@
             <!-- <a class="nav-link anchor" aria-current="page" href="#">Patient status</a> -->
           </li>
           <li class="nav-item">
-            <a class="nav-link anchor" href="#">Hospital-info</a>
+            <a class="nav-link anchor" href="{{url('aboutus')}}">Hospital-info</a>
           </li>
           <li class="nav-item">
             <a class="nav-link anchor" href="logout">Logout</a>
@@ -36,12 +36,12 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link anchor" href="#">patient-record</a>
+            <!-- <a class="nav-link anchor" href="#">patient-record</a> -->
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle anchor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              More
-            </a>
+            <!-- <a class="nav-link dropdown-toggle anchor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
+              <!-- More -->
+            <!-- </a> -->
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="#">Profile</a></li>
               <li><a class="dropdown-item" href="#">Edit Profile</a></li>
@@ -88,7 +88,7 @@
         </div>
       </div>
     </div>
-    <div class="row mt-4 ">
+    <!-- <div class="row mt-4 ">
       <div class="col-md-12">
         <div class="card">
           <div class="card-body">
@@ -98,7 +98,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   <!-- patientmodal -->
   <div class="modal fade modal-lg" id="patientModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
@@ -304,7 +304,7 @@
           tr += '<td>' + appointment.appointment_date + '</td>';
           tr += '<td>' + appointment.appointment_time + '</td>';
           if (appointment.feedback === null) {
-            tr += '<td>' + '<input type="text" name="feedback" appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
+            tr += '<td>' + '<input type="text" name="feedback"  appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
           } else {
             tr += '<td>' + appointment.feedback + '</td>';
           }
@@ -319,13 +319,13 @@
       $('.patients_data').append(tr);
     }
 
-    function updateAppointment(appointmentId, status) {
+    function updateAppointment(appointmentId, appointmentStatus) {
       $.ajax({
         url: "{{url('updateAppointment')}}",
         type: 'GET',
         data: {
           appointmentId: appointmentId,
-          status: status
+          appointmentStatus: appointmentStatus
         },
         dataType: 'json',
         success: function(response) {
