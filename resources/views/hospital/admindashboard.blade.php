@@ -257,7 +257,7 @@
                 <th>Patient_mobile</th>
                 <th>Doctor_name</th>
                 <th>Appointment_date</th>
-                <th>Appointment_time</th>
+                <!-- <th>Appointment_time</th> -->
                 <th>Appointment_status</th>
               </tr>
             </thead>
@@ -346,7 +346,7 @@
             tr += '<td>' + appointment.patient_mobile + '</td>';
             tr += '<td>' + appointment.doctor_name + '</td>';
             tr += '<td>' + appointment.appointment_date + '</td>';
-            tr += '<td>' + appointment.appointment_time + '</td>';
+            // tr += '<td>' + appointment.appointment_time + '</td>';
             if (appointment.appointment_status === null) {
               tr += '<td>' + " " + '</td>';
             } else {

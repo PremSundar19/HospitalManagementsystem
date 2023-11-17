@@ -121,7 +121,7 @@
                   <th>Patient_age</th>
                   <th>Patient_mobile</th>
                   <th>Appointment_date</th>
-                  <th>Appointment_time</th>
+                  <!-- <th>Appointment_time</th> -->
                   <th>Feed Back</th>
                   <th>Action</th>
                 </tr>
@@ -154,7 +154,7 @@
                   <th>Patient_First_Name</th>
                   <th>Patient_last_Name</th>
                   <th>Appointment_date</th>
-                  <th>Appointment_time</th>
+                  <!-- <th>Appointment_time</th> -->
                   <th>Appointment_status</th>
                   <th>Action</th>
                 </tr>
@@ -272,7 +272,7 @@
           tr += '<td>' + appointment.patient_last_name + '</td>';
         }
         tr += '<td>' + appointment.appointment_date + '</td>';
-        tr += '<td>' + appointment.appointment_time + '</td>';
+        // tr += '<td>' + appointment.appointment_time + '</td>';
         tr += '<td>' + appointment.appointment_status + '</td>';
         if (appointment.appointment_status === "pending") {
           tr += '<td><div class="d-flex">';
@@ -302,7 +302,7 @@
           tr += '<td>' + appointment.patient_age + '</td>';
           tr += '<td>' + appointment.patient_mobile + '</td>';
           tr += '<td>' + appointment.appointment_date + '</td>';
-          tr += '<td>' + appointment.appointment_time + '</td>';
+          // tr += '<td>' + appointment.appointment_time + '</td>';
           if (appointment.feedback === null) {
             tr += '<td>' + '<input type="text" name="feedback"  appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
           } else {

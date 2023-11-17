@@ -26,20 +26,20 @@
           <div class="row">
             <input type="hidden" name="doctor_id" id="doctor_id">
             <div class="col-md-6">
-              <label for="first_name" class="form-label"> First Name </label>
+              <label for="first_name" class="form-label">First Name</label>
               <input type="text" name="first_name" id="first_name" class="form-control @error('first_name') is-invalid @enderror" value="{{old('first_name')}}">
               @error('first_name')
               <span class="text-danger">{{$message}}</span>
               @enderror
             </div>
             <div class="col-md-6">
-              <label for="last_name" class="form-label"> Last Name </label>
+              <label for="last_name" class="form-label">Last Name</label>
               <input type="text" name="last_name" id="last_name" class="form-control" value="{{old('last_name') ? : ''}}">
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <label for="dob" class="form-label"> Date Of Birth </label>
+              <label for="dob" class="form-label">DOB</label>
               <input type="date" name="dob" id="dob" class="form-control  @error('dob') is-invalid @enderror" value="{{old('dob') ? : ''}}">
               @error('dob')
               <span class="text-danger">{{$message}}</span>
@@ -47,7 +47,7 @@
               <span class="text-danger" id="dobError"></span>
             </div>
             <div class="col-md-6">
-              <label for="age" class="form-label"> Age </label>
+              <label for="age" class="form-label">Age</label>
               <input type="number" name="age" id="age" class="form-control  @error('age') is-invalid @enderror" value="{{old('age') ? : ''}}" readonly>
               @error('age')
               <span class="text-danger">{{$message}}</span>
@@ -55,7 +55,41 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6">
+          <div class="col-md-6">
+            <label for="patient_mobile" class="form-label">Mobile</label>
+            <input type="text" name="patient_mobile" id="patient_mobile" class="form-control  @error('patient_mobile') is-invalid @enderror" value="{{old('patient_mobile') ? : ''}}">
+            @error('patient_mobile')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
+          </div>
+          <div class="col-md-6">
+            <label for="patient_mobile" class="form-label">Gender</label> 
+            <select name="gender" id="gender" class="form-select">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Others">Others</option>
+            </select>
+          </div>
+          </div>
+          <!-- <div class="row"> -->
+            <!-- <div class="col-md-12">
+              <label for="appointment_date" class="form-label">Appointment date</label>
+              <input type="date" name="appointment_date" id="appointment_date" class="form-control  @error('appointment_date') is-invalid @enderror" value="{{old('appointment_date') ? : ''}}">
+              <span id="appointment_dateError" class="text-danger"></span>
+              @error('appointment_date')
+              <span class="text-danger">{{$message}}</span>
+              @enderror
+            </div> -->
+            <!-- <div class="col-md-6">
+              <label for="appointment_time" class="form-label">Appointment Time</label>
+              <input type="time" name="appointment_time" id="appointment_time" class="form-control  @error('appointment_time') is-invalid @enderror" value="{{old('appointment_time') ? : ''}}">
+              <span id="appointment_timeError" class="text-danger"></span>
+              @error('appointment_time')
+              <span class="text-danger">{{$message}}</span>
+              @enderror
+            </div> -->
+          <!-- </div> -->
+          <div class="col-md-12">
               <label for="appointment_date" class="form-label">Appointment date</label>
               <input type="date" name="appointment_date" id="appointment_date" class="form-control  @error('appointment_date') is-invalid @enderror" value="{{old('appointment_date') ? : ''}}">
               <span id="appointment_dateError" class="text-danger"></span>
@@ -63,15 +97,6 @@
               <span class="text-danger">{{$message}}</span>
               @enderror
             </div>
-            <div class="col-md-6">
-              <label for="appointment_time" class="form-label">Appointment Time</label>
-              <input type="time" name="appointment_time" id="appointment_time" class="form-control  @error('appointment_time') is-invalid @enderror" value="{{old('appointment_time') ? : ''}}">
-              <span id="appointment_timeError" class="text-danger"></span>
-              @error('appointment_time')
-              <span class="text-danger">{{$message}}</span>
-              @enderror
-            </div>
-          </div>
           <div class="row">
             <div class="col-md-6">
               <label for="Specialists">Specialists</label>
@@ -93,13 +118,6 @@
               <select name="doctor_name" id="doctor_name" class="form-select displayDoctors">
               </select>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="patient_mobile" class="form-label"> Mobile </label>
-            <input type="text" name="patient_mobile" id="patient_mobile" class="form-control  @error('patient_mobile') is-invalid @enderror" value="{{old('patient_mobile') ? : ''}}">
-            @error('patient_mobile')
-            <span class="text-danger">{{$message}}</span>
-            @enderror
           </div>
           <br>
           <div class="form-group">

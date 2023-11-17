@@ -18,7 +18,7 @@ class AppointmentController extends Controller
             'dob' => 'required',
             'age' => 'required',
             'appointment_date' => 'required',
-            'appointment_time' => 'required',
+            'gender'=>'required',
             'doctor_name' => 'required',
             'patient_mobile' => 'required',
         ]);
@@ -35,19 +35,22 @@ class AppointmentController extends Controller
         // $hospitalInTime = Carbon::createFromFormat('H:i:s', '09:00:00');
         // $hospitalOutTime =  Carbon::createFromFormat('H:i:s', '19:00:00');
 
-        $appointmentTime = $data['appointment_time'];
+        // $appointmentTime = $data['appointment_time'];
 
         $docId = $data['doctor_id'];
         $date =  $data['appointment_date'];
         
         $appointmentData = DB::select('SELECT doctor_name,status FROM appointment WHERE doctor_id=? and appointment_date=?',[$docId,$date]);
         // dd($appointmentData);
-        if($appointmentData[0]->status === 1){
-            // dd('hii');
-            Session::flash('message', 'Sorry, Doctor are not available');
-            Session::flash('class', 'danger');
-            return redirect()->back();
+        if($appointmentData != null){
+            if($appointmentData[0]->status === 1){
+                // dd('hii');
+                Session::flash('message', 'Sorry, Doctor are not available');
+                Session::flash('class', 'danger');
+                return redirect()->back();
+            }
         }
+       
 
 
         // $doctor =  DB::select('SELECT * FROM doctor where doctor_id=?', [$docId]);
@@ -69,9 +72,10 @@ class AppointmentController extends Controller
                 'patient_dob' => $data['dob'],
                 'patient_age' => $data['age'],
                 'appointment_date' => $data['appointment_date'],
-                'appointment_time' => $appointmentTime,
+                // 'appointment_time' => $appointmentTime,
+                'patient_gender'=>$data['gender'],
                 'doctor_id' => $data['doctor_id'],
-                'doctor_name' => $data['doctor'],
+                'doctor_name' => $data['doctor_name'],
                 'patient_mobile' => $data['patient_mobile'],
             ];
 
