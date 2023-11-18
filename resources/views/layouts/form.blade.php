@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,13 +24,15 @@
             height: 100%;
             color: white;
         }
-        .red{
-            color: red; 
+
+        .red {
+            color: red;
         }
-        
-        .green{
-            color: green; 
+
+        .green {
+            color: green;
         }
+
         .admindashboard {
             background-image: url('image/6f6c1538b050072b002dbc06bedaaf90.jpg');
         }
@@ -49,14 +50,10 @@
         }
 
         .registerbc {
-            /* body { */
-            background-color: #f0f0f0; /* Use the color code or name you prefer */
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif; /* Set a default font for the page */
-        /* } */
-
-            /* background-image: url('image/purple-background-registration.png'); */
+            font-family: Arial, sans-serif;
         }
 
         .anchor {
@@ -67,32 +64,33 @@
             color: black;
         }
 
-        a{
+        a {
             text-decoration: none;
         }
+
         .actualform {
             padding: 0 30px;
         }
-        .appointmentform {
-    background-color: #f8f9fa; 
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(55, 75, 85, 0.5); 
-  }
 
-  .Appointmenttitle {
-    color: #007bff; 
-  }
-        .form{
+        .appointmentform {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(55, 75, 85, 0.5);
+        }
+
+        .Appointmenttitle {
+            color: #007bff;
+        }
+
+        .form {
             box-shadow: 0 4px 8px rgba(250, 250, 250, 0.8);
             border: 1px solid silver;
             border-radius: 25px;
             padding: 15px;
-            background-color: rgba(50, 50, 50 , 0.9);
+            background-color: rgba(50, 50, 50, 0.9);
             backface-visibility: visible;
         }
-
-    
 
         .graph-container {
             width: 80%;
@@ -147,7 +145,4 @@
     </script>
 </head>
 @yield('content')
-
-
-
 </html>

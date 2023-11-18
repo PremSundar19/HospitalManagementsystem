@@ -64,6 +64,17 @@
         </div>
       </div>
     </div>
+    <!-- <div class="row mt-4 ">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text"> </p>
+            <a href="#" class="btn btn-primary"></a>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </div>
   <!-- <div class="graph-container">
     <h2>Hospital Management System - Daily Patient Count</h2>
