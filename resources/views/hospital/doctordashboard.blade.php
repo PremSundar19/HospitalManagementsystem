@@ -40,7 +40,7 @@
           </li>
           <li class="nav-item dropdown">
             <!-- <a class="nav-link dropdown-toggle anchor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
-              <!-- More -->
+            <!-- More -->
             <!-- </a> -->
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -72,9 +72,10 @@
       <div class="col-md-4">
         <div class="card  bg-success">
           <div class="card-body">
-            <h5 class="card-title">Patients</h5>
-            <p class="card-text">Total Patients: <span id="totalPatients"></span></p>
-            <button type="button" class="btn btn-primary ListOfDoctors" data-bs-toggle="modal" data-bs-target="#patientModal">View Details</button>
+            <h5 class="card-title">Update Patient Status</h5>
+            <!-- <p class="card-text">Total Patients: <span id="totalPatients"></span></p> -->
+            <p class="card-text"> &nbsp;</p>
+            <button type="button" class="btn btn-primary ListOfDoctors" data-bs-toggle="modal" data-bs-target="#patientModal">Update-Status</button>
           </div>
         </div>
       </div>
@@ -83,7 +84,7 @@
           <div class="card-body">
             <h5 class="card-title">Update Availablity</h5>
             <p class="card-text"> &nbsp;</p>
-            <button type="button" class="btn btn-primary ListOfAppointments" data-bs-target="#availabilityModal" data-bs-toggle="modal">View Details</button>
+            <button type="button" class="btn btn-primary ListOfAppointments" data-bs-target="#availabilityModal" data-bs-toggle="modal">Update-Status</button>
           </div>
         </div>
       </div>
@@ -303,16 +304,17 @@
           tr += '<td>' + appointment.patient_mobile + '</td>';
           tr += '<td>' + appointment.appointment_date + '</td>';
           // tr += '<td>' + appointment.appointment_time + '</td>';
-          if (appointment.feedback === null) {
+          if (appointment.feedback === "null") {
             tr += '<td>' + '<input type="text" name="feedback"  appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
           } else {
             tr += '<td>' + appointment.feedback + '</td>';
           }
-          if (appointment.feedback === null) {
+          if (appointment.feedback === "null") {
             tr += '<td><div class="d-flex">';
             tr += '<a class="btn btn-success  btn-xs py-0" onclick=updateReason("' + appointment.appointment_id + '")>submit</a>';
             tr += '</div></td>';
           }
+
           tr += '</tr>';
         }
       });

@@ -58,7 +58,7 @@
         <div class="card  bg-info">
           <div class="card-body">
             <h5 class="card-title">Appointments</h5>
-            <p class="card-text">Upcoming Appointments: <span id="totalAppointment"></span></p>
+            <p class="card-text">Total Appointments: <span id="totalAppointment"></span></p>
             <button type="button" class="btn btn-primary ListOfAppointments" data-bs-toggle="modal" data-bs-target=".appointments">View Details</button>
           </div>
         </div>
@@ -139,17 +139,17 @@
           </button>
         </div>
         <div class="modal-body">
-        @if(Session::has('appointmentMessage'))
-        <div class="alert alert-danger justify-content-justify" role="alert">
-          {{ Session::get('appointmentMessage') }}
-        </div>
-        <script>
-          setTimeout(function() {
-            var alert = document.querySelector('.alert');
-            alert.style.display = 'none';
-          }, 4000);
-        </script>
-        @endif
+          @if(Session::has('appointmentMessage'))
+          <div class="alert alert-danger justify-content-justify" role="alert">
+            {{ Session::get('appointmentMessage') }}
+          </div>
+          <script>
+            setTimeout(function() {
+              var alert = document.querySelector('.alert');
+              alert.style.display = 'none';
+            }, 4000);
+          </script>
+          @endif
           <form action="{{url('bookAppointment')}}" class="black" method="post">
             @csrf
             <div class="row">
@@ -296,7 +296,7 @@
         }
       });
     }
-  
+
     $('.ListOfPatients').on('click', () => {
       $('.patient_data').empty();
       $.ajax({
@@ -389,42 +389,42 @@
         }
       });
     });
-    
+
     $('.ListOfDoctors').on('click', () => {
-  $.ajax({
-    type: 'get',
-    url: "{{url('fetchDoctor')}}",
-    success: function(response) {
-      $('.doctor_data').empty();
-      var div = '';
-      var counter = 0;
+      $.ajax({
+        type: 'get',
+        url: "{{url('fetchDoctor')}}",
+        success: function(response) {
+          $('.doctor_data').empty();
+          var div = '';
+          var counter = 0;
 
-      $.each(response, function(index, doctor) {
-        if (counter % 3 === 0) {
-          div += '<div class="row">';
+          $.each(response, function(index, doctor) {
+            if (counter % 3 === 0) {
+              div += '<div class="row">';
+            }
+            div += '<div class="col-md-4">';
+            div += '<div class="card black">';
+            div += '<div class="card-body">';
+            div += '<img src="img/doctorlogo.png" alt="" width="50" height="50" class="card-image">';
+            div += '<h5 class="card-title">' + doctor.doctor_name + '</h5>'
+            div += '<p class="card-text">' + doctor.email + '</p>';
+            div += '<p class="card-text">' + doctor.mobile + '</p>';
+            div += '<p class="card-text">' + doctor.specilization + '</p>';
+            div += '</div>';
+            div += '</div>';
+            div += '</div>';
+            if ((counter + 1) % 3 === 0 || (index + 1) === response.length) {
+              div += '</div>';
+              div += '<br>';
+            }
+            counter++;
+          });
+
+          $('.doctor_data').append(div);
         }
-        div += '<div class="col-md-4">';
-        div += '<div class="card black">';
-        div += '<div class="card-body">';
-        div += '<img src="img/doctorlogo.png" alt="" width="50" height="50" class="card-image">';
-        div += '<h5 class="card-title">' + doctor.doctor_name + '</h5>'
-        div += '<p class="card-text">' + doctor.email + '</p>';
-        div += '<p class="card-text">' + doctor.mobile + '</p>';
-        div += '<p class="card-text">' + doctor.specilization + '</p>';
-        div += '</div>';
-        div += '</div>';
-        div += '</div>';
-        if ((counter + 1) % 3 === 0 || (index + 1) === response.length) {
-          div += '</div>';
-          div += '<br>';
-        }
-        counter++;
       });
-
-      $('.doctor_data').append(div);
-    }
-  });
-});
+    });
   </script>
 </body>
 @endsection

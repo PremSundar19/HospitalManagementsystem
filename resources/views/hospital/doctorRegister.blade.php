@@ -13,7 +13,7 @@
                     setTimeout(function() {
                         var alert = document.querySelector('.alert');
                         alert.style.display = 'none';
-                        // window.location.href = '/index';
+                        window.location.href = '/index';
                     }, 4000);
                 </script>
                 @endif
@@ -51,11 +51,11 @@
                             <option value="Dermatology">Dermatology</option>
                             <option value="Neurologist">Neurologist</option>
                             <option value="Dermatologist">Dermatologist</option>
-                            <option value="Psychiatry">Psychiatry</option>
-                            <option value="Endocrinologist">Endocrinologist</option>
+                            <!-- <option value="Psychiatry">Psychiatry</option> -->
+                            <!-- <option value="Endocrinologist">Endocrinologist</option> -->
                             <option value="Accident and emergency medicine">Accident and emergency medicine</option>
-                            <option value="Dentist">Dentist</option>
-                            <option value="Immunology">Immunology</option>
+                            <!-- <option value="Dentist">Dentist</option> -->
+                            <!-- <option value="Immunology">Immunology</option> -->
                         </select>
                         @error('specilization')
                         <span class="text-danger">{{$message}}</span>

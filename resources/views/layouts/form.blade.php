@@ -88,6 +88,8 @@
             border: 1px solid silver;
             border-radius: 25px;
             padding: 15px;
+            background-color: rgba(50, 50, 50 , 0.9);
+            backface-visibility: visible;
         }
 
     

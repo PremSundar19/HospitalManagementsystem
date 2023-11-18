@@ -41,7 +41,7 @@
     <div class="container mt-5">
         <h1 class="mt-4 black">Welcome to Beta Hospital</h1>
     </div>
-    <div class="container right">
+    <div class="container ">
         <div class="row">
             <div class="col-lg-4">
                 @if(Session::has('message'))
@@ -56,7 +56,7 @@
                 </script>
                 @endif
                 <div class="form">
-                    <form action="{{url('loginUser')}}" class="actualform black" method="post">
+                    <form action="{{url('loginUser')}}" class="actualform anchor" method="post">
 
                         @csrf
                         <h5>Login Form</h5>

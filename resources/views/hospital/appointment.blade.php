@@ -55,24 +55,24 @@
             </div>
           </div>
           <div class="row">
-          <div class="col-md-6">
-            <label for="patient_mobile" class="form-label">Mobile</label>
-            <input type="text" name="patient_mobile" id="patient_mobile" class="form-control  @error('patient_mobile') is-invalid @enderror" value="{{old('patient_mobile') ? : ''}}">
-            @error('patient_mobile')
-            <span class="text-danger">{{$message}}</span>
-            @enderror
-          </div>
-          <div class="col-md-6">
-            <label for="patient_mobile" class="form-label">Gender</label> 
-            <select name="gender" id="gender" class="form-select">
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Others">Others</option>
-            </select>
-          </div>
+            <div class="col-md-6">
+              <label for="patient_mobile" class="form-label">Mobile</label>
+              <input type="text" name="patient_mobile" id="patient_mobile" class="form-control  @error('patient_mobile') is-invalid @enderror" value="{{old('patient_mobile') ? : ''}}">
+              @error('patient_mobile')
+              <span class="text-danger">{{$message}}</span>
+              @enderror
+            </div>
+            <div class="col-md-6">
+              <label for="patient_mobile" class="form-label">Gender</label>
+              <select name="gender" id="gender" class="form-select">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
           </div>
           <!-- <div class="row"> -->
-            <!-- <div class="col-md-12">
+          <!-- <div class="col-md-12">
               <label for="appointment_date" class="form-label">Appointment date</label>
               <input type="date" name="appointment_date" id="appointment_date" class="form-control  @error('appointment_date') is-invalid @enderror" value="{{old('appointment_date') ? : ''}}">
               <span id="appointment_dateError" class="text-danger"></span>
@@ -80,7 +80,7 @@
               <span class="text-danger">{{$message}}</span>
               @enderror
             </div> -->
-            <!-- <div class="col-md-6">
+          <!-- <div class="col-md-6">
               <label for="appointment_time" class="form-label">Appointment Time</label>
               <input type="time" name="appointment_time" id="appointment_time" class="form-control  @error('appointment_time') is-invalid @enderror" value="{{old('appointment_time') ? : ''}}">
               <span id="appointment_timeError" class="text-danger"></span>
@@ -90,13 +90,13 @@
             </div> -->
           <!-- </div> -->
           <div class="col-md-12">
-              <label for="appointment_date" class="form-label">Appointment date</label>
-              <input type="date" name="appointment_date" id="appointment_date" class="form-control  @error('appointment_date') is-invalid @enderror" value="{{old('appointment_date') ? : ''}}">
-              <span id="appointment_dateError" class="text-danger"></span>
-              @error('appointment_date')
-              <span class="text-danger">{{$message}}</span>
-              @enderror
-            </div>
+            <label for="appointment_date" class="form-label">Appointment date</label>
+            <input type="date" name="appointment_date" id="appointment_date" class="form-control  @error('appointment_date') is-invalid @enderror" value="{{old('appointment_date') ? : ''}}">
+            <span id="appointment_dateError" class="text-danger"></span>
+            @error('appointment_date')
+            <span class="text-danger">{{$message}}</span>
+            @enderror
+          </div>
           <div class="row">
             <div class="col-md-6">
               <label for="Specialists">Specialists</label>
@@ -106,11 +106,11 @@
                 <option value="Dermatology">Dermatology</option>
                 <option value="Neurologist">Neurologist</option>
                 <option value="Dermatologist">Dermatologist</option>
-                <option value="Psychiatry">Psychiatry</option>
-                <option value="Endocrinologist">Endocrinologist</option>
+                <!-- <option value="Psychiatry">Psychiatry</option>
+                <option value="Endocrinologist">Endocrinologist</option> -->
                 <option value="Accident and emergency medicine">Accident and emergency medicine</option>
-                <option value="Dentist">Dentist</option>
-                <option value="Immunology">Immunology</option>
+                <!-- <option value="Dentist">Dentist</option> -->
+                <!-- <option value="Immunology">Immunology</option> -->
               </select>
             </div>
             <div class="col-md-6 d" style="display: none;">
@@ -122,7 +122,8 @@
           <br>
           <div class="form-group">
             <input type="submit" value="Book-Appointment" class="btn btn-primary btn-xs py-0">
-            <button type="button" class="btn btn-secondary btn-xs py-0 close" data-bs-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn btn-secondary btn-xs py-0 close" data-bs-dismiss="modal">Cancel</button> -->
+            <a href="{{url('admindashboard')}}" class="btn btn-secondary btn-xs py-0">Cancel</a>
           </div>
         </form>
       </div>
@@ -164,7 +165,7 @@
           success: function(response) {
             $('.displayDoctors').empty();
             var option = '';
-            option += '<option>Choose..</option>';
+            option += '<option value="Choose..">Choose..</option>';
             $.each(response, function(index, doctor) {
               option += '<option value=' + doctor.doctor_name + '>' + doctor.doctor_name + '</option>';
             });
@@ -185,6 +186,10 @@
           success: function(response) {
             $('#doctor_name option').each(function() {
               var doctorName = $(this).val();
+              if (doctorName === "Choose..") {
+                // console.log('if');
+                $(this).addClass("black");
+              }
               var matchingDoctor = response.find(doctor => doctorName === doctor.doctor_name && doctor.status === 1);
               if (matchingDoctor) {
                 $(this).addClass("red");
@@ -197,20 +202,20 @@
       });
 
 
-    //   $('#appointment_time').on('change', () => {
-    //     var selectedTime = $('#appointment_time').val();
-    //     var selectedDate = new Date($('#appointment_date').val());
-    //     var now = new Date();
-    //     var hours = now.getHours().toString().padStart(2, '0');
-    //     var minutes = now.getMinutes().toString().padStart(2, '0');
-    //     var currentTime = hours + ':' + minutes;
-    //     if ((selectedTime < currentTime) && now.getDate() === selectedDate.getDate()) {
-    //       $('#appointment_timeError').text('* Please select proper time');
-    //       $('#appointment_time').val('');
-    //     } else {
-    //       $('#appointment_timeError').text('');
-    //     }
-    //   });
+      //   $('#appointment_time').on('change', () => {
+      //     var selectedTime = $('#appointment_time').val();
+      //     var selectedDate = new Date($('#appointment_date').val());
+      //     var now = new Date();
+      //     var hours = now.getHours().toString().padStart(2, '0');
+      //     var minutes = now.getMinutes().toString().padStart(2, '0');
+      //     var currentTime = hours + ':' + minutes;
+      //     if ((selectedTime < currentTime) && now.getDate() === selectedDate.getDate()) {
+      //       $('#appointment_timeError').text('* Please select proper time');
+      //       $('#appointment_time').val('');
+      //     } else {
+      //       $('#appointment_timeError').text('');
+      //     }
+      //   });
     });
   </script>
 </body>

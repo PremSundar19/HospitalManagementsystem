@@ -13,7 +13,10 @@ class HospitalController extends Controller
 {
     public function adminDashboard()
     {
-        return view('hospital.admindashboard');
+        if (session('admin_id')) {
+            return view('hospital.admindashboard');
+        }
+        return $this->index();
     }
 
     public function userDashboard()
@@ -23,7 +26,11 @@ class HospitalController extends Controller
 
     public function doctorDashboard()
     {
-        return view('hospital.doctordashboard');
+        if (session('doctor_id')) {
+            return view('hospital.doctordashboard');
+        }
+    
+        return $this->index();
     }
     public function index()
     {
@@ -56,6 +63,7 @@ class HospitalController extends Controller
         }
 
         if ($type === "Admin" && $email === "admin123@gmail.com" && $password === "Admin@123") {
+            Session::put('admin_id', 1);
             return $this->adminDashboard();
         }
         if ($type === "Doctor") {
@@ -73,15 +81,15 @@ class HospitalController extends Controller
                 if (hash::check($password, $user->password)) {
                     Session::put('user_id', $user->user_id);
                     return $this->userDashboard();
-                    
                 }
             }
         }
         return redirect('index')->with('message', 'Login credentials Wrong');
     }
 
-    public function logout(){
+    public function logout()
+    {
         Session::flush();
-        return redirect('login');
+        return redirect('index');
     }
 }

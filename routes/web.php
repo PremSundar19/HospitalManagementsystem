@@ -63,9 +63,7 @@ Route::get('/aboutus',function(){
     return view('hospital.aboutus');
 });
 
-Route::get('/appointment',function(){
-    return view('hospital.appointment');
-});
+Route::get('/appointment',[AppointmentController::class,'showAppointment']);
 
 
 // Route::get('/demo',function(){

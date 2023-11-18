@@ -48,7 +48,7 @@ class DoctorController extends Controller
     public function updateAvailability(Request $request){
         $doctorId = $request->doctor_id;
         $date = $request->date;
-        $rowAffected = DB::update('UPDATE doctor SET availability=?,date_of_not_availability=? WHERE doctor_id=?',['not available',$date,$doctorId]);
+        $rowAffected = DB::update('UPDATE doctor SET availability=?,not_availability=? WHERE doctor_id=?',['not available',$date,$doctorId]);
         return redirect('doctordashboard')->with('message', 'Availability Updated Successfully');
     }
 
