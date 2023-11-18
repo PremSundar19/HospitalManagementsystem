@@ -28,7 +28,6 @@ class DoctorController extends Controller
         $doctor->specilization = $data['specilization'];
         $doctor->password = Hash::make($data['password']);
         $doctor->save();
-        // return redirect('index');
         return redirect('register')->with('message', 'Registration successfully!');
     }
 
