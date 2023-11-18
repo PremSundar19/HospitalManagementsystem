@@ -19,7 +19,6 @@ class AppointmentController extends Controller
     }
     public function storeAppointment(Request $request)
     {
-
         $validateData = $request->validate([
             "first_name" => 'required',
             'dob' => 'required',
