@@ -21,30 +21,26 @@
         </script>
         @endif
       </div>
+      <div class="container">
+        <div class="row  justify-content-center">
+          <div class="col-sm-4">
+            <div class="alert alert-success text-center DoctorName" role="alert">
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <!-- <a class="nav-link anchor" aria-current="page" href="#">Patient status</a> -->
-          </li>
-          <li class="nav-item">
-            <a class="nav-link anchor" href="{{url('aboutus')}}">Hospital-info</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link anchor" href="logout">Logout</a>
-            <!-- <a class="nav-link anchor" data-bs-target="#availabilityModal" data-bs-toggle="modal">availability</a> -->
-
-          </li>
-
-          <li class="nav-item">
-            <!-- <a class="nav-link anchor" href="#">patient-record</a> -->
+            <a class="nav-link anchor" href="{{url('aboutus')}}">about</a>
           </li>
           <li class="nav-item dropdown">
-            <!-- <a class="nav-link dropdown-toggle anchor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
-            <!-- More -->
-            <!-- </a> -->
+            <a class="nav-link dropdown-toggle anchor" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              More
+            </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><a class="dropdown-item" href="#">Edit Profile</a></li>
+              <li><a class="dropdown-item " data-bs-target="#doctorProfileModal" id="profile" data-bs-toggle="modal">Profile</a></li>
+              <li><a class="dropdown-item" data-bs-target="#doctorEditProfileModal" id="editprofile" data-bs-toggle="modal">Edit Profile</a></li>
               <li>
                 <hr class="dropdown-divider">
               </li>
@@ -55,6 +51,116 @@
       </div>
     </div>
   </nav>
+  <!-- doctor Profile  -->
+  <div class="modal fade modal-lg" id="doctorProfileModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title black" id="profilemodal">Doctor Profile</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <table class="table  table-hover appointmentform black">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email </th>
+                <th>Mobile</th>
+                <th>Specilization</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <form class="appointmentform black">
+                  @csrf
+                  <td>
+                    <div class="form-group">
+                      <input type="text" name="doctorname" id="drName" class="form-control" readonly>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="email" name="email" id="drEmail" class="form-control" readonly>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="number" name="mobile" id="drMobile" class="form-control" readonly>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" name="specilization" id="drSpecilization" class="form-control" readonly>
+                    </div>
+                  </td>
+                </form>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- doctor Edit Profile  -->
+  <div class="modal fade" id="doctorEditProfileModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title black" id="profilemodal">Edit Doctor Profile</h5>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{{url('updateDoctor')}}" class="appointmentform black" method="post">
+            <input type="hidden" name="drId" id="drId">
+            @csrf
+            <div class="form-group">
+              <label for="doctorname" class="form-label">Doctor Name</label>
+              <input type="text" name="doctorname" id="doctorname" class="form-control @error('doctorname') is-invalid @enderror">
+              @error('doctorname')
+              <span class="text-danger">{{$message}}</span>
+              @enderror
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror">
+              @error('email')
+              <span class="text-danger">{{$message}}</span>
+              @enderror
+            </div>
+            <div class="form-group">
+              <label for="mobile" class="form-label">Mobile</label>
+              <input type="number" name="mobile" id="mobile" class="form-control  @error('mobile') is-invalid @enderror">
+              @error('mobile')
+              <span class="text-danger">{{$message}}</span>
+              @enderror
+            </div>
+            <div class="form-group">
+              <label for="specilization" class="form-label">Specilization</label>
+              <select name="specilization" id="specilization" class="form-select">
+                <option>Choose...</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Dermatology">Dermatology</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Accident and emergency medicine">Accident and emergency medicine</option>
+              </select>
+              @error('specilization')
+              <span class="text-danger">{{$message}}</span>
+              @enderror
+            </div>
+            <br>
+            <div class="form-group">
+              <input type="submit" value="submit" class="btn btn-primary btn-xs py-1">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- card -->
   <div class="container">
@@ -73,7 +179,6 @@
         <div class="card  bg-success">
           <div class="card-body">
             <h5 class="card-title">Update Patient Status</h5>
-            <!-- <p class="card-text">Total Patients: <span id="totalPatients"></span></p> -->
             <p class="card-text"> &nbsp;</p>
             <button type="button" class="btn btn-primary ListOfDoctors" data-bs-toggle="modal" data-bs-target="#patientModal">Update-Status</button>
           </div>
@@ -82,24 +187,13 @@
       <div class="col-md-4">
         <div class="card  bg-info">
           <div class="card-body">
-            <h5 class="card-title">Update Availablity</h5>
+            <h5 class="card-title">Update Availability</h5>
             <p class="card-text"> &nbsp;</p>
-            <button type="button" class="btn btn-primary ListOfAppointments" data-bs-target="#availabilityModal" data-bs-toggle="modal">Update-Status</button>
+            <button type="button" class="btn btn-primary ListOfAppointments" data-bs-target="#availabilityModal" data-bs-toggle="modal">Update</button>
           </div>
         </div>
       </div>
     </div>
-    <!-- <div class="row mt-4 ">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"> </p>
-            <a href="#" class="btn btn-primary"></a>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
   <!-- patientmodal -->
   <div class="modal fade modal-lg" id="patientModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
@@ -122,16 +216,24 @@
                   <th>Patient_age</th>
                   <th>Patient_mobile</th>
                   <th>Appointment_date</th>
-                  <!-- <th>Appointment_time</th> -->
-                  <th>Feed Back</th>
+                  <th>Feed_Back</th>
                   <th>Action</th>
                 </tr>
               </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" name="Patient_First_Name" class="search"></td>
+                  <td><input type="text" name="Patient_last_Name" class="search"></td>
+                  <td><input type="text" name="Patient_dob" class="search"></td>
+                  <td><input type="text" name="Patient_age" class="search"></td>
+                  <td><input type="text" name="Patient_mobile" class="search"></td>
+                  <td><input type="text" name="Appointment_date" class="search"></td>
+                  <td><input type="text" name="Feed_Back" class="search"></td>
+                </tr>
+              </tbody>
               <tbody class="patients_data"></tbody>
             </table>
           </div>
-        </div>
-        <div class="modal-footer">
         </div>
       </div>
     </div>
@@ -155,16 +257,21 @@
                   <th>Patient_First_Name</th>
                   <th>Patient_last_Name</th>
                   <th>Appointment_date</th>
-                  <!-- <th>Appointment_time</th> -->
                   <th>Appointment_status</th>
                   <th>Action</th>
                 </tr>
               </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" name="Patient_First_Name" class="search"></td>
+                  <td><input type="text" name="Patient_last_Name" class="search"></td>
+                  <td><input type="text" name="Appointment_date" class="search"></td>
+                  <td><input type="text" name="Appointment_status" class="search"></td>
+                </tr>
+              </tbody>
               <tbody class="appointments_data"></tbody>
             </table>
           </div>
-        </div>
-        <div class="modal-footer">
         </div>
       </div>
     </div>
@@ -180,7 +287,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <table class="table table-bordered">
+          <table class="table table-bordered table-stripted table-hover">
             <thead>
               <tr>
                 <th>Doctor name</th>
@@ -213,7 +320,6 @@
             </tbody>
           </table>
         </div>
-        <div class="modal-footer"></div>
       </div>
     </div>
   </div>
@@ -229,6 +335,7 @@
   use Illuminate\Support\Facades\Session;
 
   $doctorId = Session::get('doctor_id');
+  $doctor_name = Session::get('doctor_name');
   ?>
 
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -236,11 +343,36 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script>
     var doctorId = "<?php echo $doctorId; ?>";
+    var doctorname = "<?php echo $doctor_name; ?>";
+    $('.DoctorName').text('Hi ' + doctorname);
     $('.updateClose').click(() => {
       $('#date').val('');
       $('#notavailable').val('Choose...');
     });
+
+    $('#profile, #editprofile').click(() => {
+      $.ajax({
+        url: '/fetchDoctorById/' + doctorId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(response) {
+          $.each(response, function(index, doctor) {
+            $('#drId').val(doctor.doctor_id);
+            $('#drName, #doctorname').val(doctor.doctor_name);
+            $('#drEmail, #email').val(doctor.email);
+            $('#drMobile, #mobile').val(doctor.mobile);
+            $('#drSpecilization, #specilization').val(doctor.specilization);
+          });
+        }
+      });
+    });
     $(document).ready(() => {
+      $(".search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".patients_data tr, .appointments_data tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
       listOfAppointments();
     });
 
@@ -304,17 +436,16 @@
           tr += '<td>' + appointment.patient_mobile + '</td>';
           tr += '<td>' + appointment.appointment_date + '</td>';
           // tr += '<td>' + appointment.appointment_time + '</td>';
-          if (appointment.feedback === "null") {
+          if (appointment.feedback === null) {
             tr += '<td>' + '<input type="text" name="feedback"  appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
           } else {
             tr += '<td>' + appointment.feedback + '</td>';
           }
-          if (appointment.feedback === "null") {
+          if (appointment.feedback === null) {
             tr += '<td><div class="d-flex">';
             tr += '<a class="btn btn-success  btn-xs py-0" onclick=updateReason("' + appointment.appointment_id + '")>submit</a>';
             tr += '</div></td>';
           }
-
           tr += '</tr>';
         }
       });
@@ -339,7 +470,6 @@
     }
 
     function updateReason(appointmentId) {
-
       var feedbackSelector = 'input[appointmentId="' + appointmentId + '"]';
       var feedback = $(feedbackSelector).val();
       $.ajax({

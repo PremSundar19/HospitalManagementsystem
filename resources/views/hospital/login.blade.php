@@ -39,7 +39,6 @@
                                 <option>Choose..</option>
                                 <option value="Admin">Admin</option>
                                 <option value="Doctor">Doctor</option>
-                                <!-- <option value="User">User</option> -->
                             </select>
                             @error('type')
                             <span class="text-danger">{{$message}}</span>

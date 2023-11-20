@@ -7,12 +7,6 @@
             <h5>Beta - Hospital </h5>
         </div>
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <!-- <img src="https://placeholder.pics/svg/150x50/888888/EEE/Logo" alt="..." height="36"> -->
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -20,19 +14,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{url('aboutus')}}">aboutus</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"> -->
-                        <!-- More -->
-                        <!-- </a> -->
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="#">Edit Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
-                        </ul>
                     </li>
                 </ul>
             </div>
@@ -95,17 +76,5 @@
             </div>
         </div>
     </div>
-
-    <!-- <div class="container mt-5">
-        <div class="col-md-7">
-            <div class="card black">
-                <div class="card-body">
-                    <h5 class="card-title">Beta Hospital</h5>
-                    <p class="card-text">Beta Hospital in Chennai has a supportive and friendly staff, and the latest medical know-how to help patients. The clinic abides by all the necessary safety protocols, including Covid-19 precautionary measures. The doctor and team offer world-class care and guidance, always putting their patients first.</p>
-                </div>
-            </div>
-        </div>
-    </div> -->
-
 </body>
 @endsection

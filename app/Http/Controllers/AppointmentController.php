@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\Doctor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -12,52 +13,44 @@ class AppointmentController extends Controller
 {
     public function showAppointment()
     {
-        if (session('admin_id')) {
-            return view('hospital.appointment');
-        }
-        return redirect('index');
+        return session('admin_id') ? view('hospital.appointment') : redirect('index');
     }
     public function storeAppointment(Request $request)
     {
+
         $validateData = $request->validate([
-            "first_name" => 'required',
+            'first_name' => 'required',
             'dob' => 'required',
             'age' => 'required',
             'appointment_date' => 'required',
-            'gender' => 'required',
+            'gender' => 'required|not_in:choose',
             'doctor_name' => 'required',
             'patient_mobile' => 'required',
+            'Specialists' => 'required|not_in:Choose...',
         ]);
-        $data = $request->input();
-        $specialists = $data['Specialists'];
-        if ($specialists === "Choose...") {
-            Session::flash('message', 'Choose valid type');
-            Session::flash('class', 'danger');
-            return redirect()->back();
-        }
-        $docId = $data['doctor_id'];
-        $date =  $data['appointment_date'];
-        $appointmentData = DB::select('SELECT * FROM appointment WHERE doctor_id=?', [$docId]);
 
-        if ($appointmentData != null) {
-            if ($appointmentData[0]->status === 1) {
+        $data = $request->input();
+        $docId = $data['doctor_id'];
+        $date = $data['appointment_date'];
+
+        $appointmentData = DB::select('SELECT * FROM appointment WHERE doctor_id=? and appointment_date=?', [$docId,$date]);
+            if ($appointmentData && $appointmentData && $appointmentData[0]->status === 1) {
                 Session::flash('message', 'Sorry, Doctor are not available');
                 Session::flash('class', 'danger');
                 return redirect()->back();
             }
-        }
 
-        $doctorData = DB::select('SELECT * doctor WHERE doctor_id=?', [$docId]);
-        if ($doctorData != null) {
-            if ($doctorData[0]->not_availability === $date) {
+
+        $doctorData = DB::select('SELECT * FROM doctor WHERE doctor_id=?', [$docId]);
+            if ($doctorData && $doctorData[0]->not_availability === $date) {
                 Session::flash('message', 'Sorry, Doctor are not available,please select another date.');
                 Session::flash('class', 'danger');
                 return redirect()->back();
             }
-        }
+
         $appointment = [
-            'patient_first_name' => $data['first_name'],
-            'patient_last_name' => $data['last_name'],
+            'patient_first_name' => strtolower($data['first_name']),
+            'patient_last_name' => strtolower( $data['last_name']),
             'patient_dob' => $data['dob'],
             'patient_age' => $data['age'],
             'appointment_date' => $data['appointment_date'],
@@ -68,13 +61,12 @@ class AppointmentController extends Controller
         ];
 
         DB::table('appointment')->insert($appointment);
-
         Session::flash('message', 'Appointment Booked Successfully');
         Session::flash('class', 'success');
         Session::flash('status', true);
         return redirect()->back();
     }
-
+    
     public function getAppointments($doctorId)
     {
         return Appointment::where('doctor_id', $doctorId)->get();

@@ -24,52 +24,42 @@ Route::get('/', function () {
     return view('welcome');
 });
 //form or view related routes
-// Route::get('register',[HospitalController::class,'register']);
-// Route::get('login',[HospitalController::class,'login']);
-Route::get('admindashboard',[HospitalController::class,'adminDashboard']);
-Route::get('doctordashboard',[HospitalController::class,'doctorDashboard']);
-// Route::get('userdashboard',[HospitalController::class,'userDashboard']);
-Route::get('index',[HospitalController::class,'index']);
-Route::get('register',[HospitalController::class,'register']);
-Route::get('logout',[HospitalController::class,'logout']);
+Route::post('loginUser', [HospitalController::class, 'loginUser']);
+
+Route::get('admindashboard', [HospitalController::class, 'adminDashboard']);
+Route::get('doctordashboard', [HospitalController::class, 'doctorDashboard']);
+Route::get('index', [HospitalController::class, 'index']);
+Route::get('register', [HospitalController::class, 'register']);
+Route::get('logout', [HospitalController::class, 'logout']);
 
 
-//user-related route
-Route::post('storeUser',[UserController::class,'storeUser']);
-Route::post('loginUser',[HospitalController::class,'loginUser']);
 
 //appointment related routes
-Route::post('bookAppointment',[AppointmentController::class,'storeAppointment']);
-Route::get('fetchAppointment',[AppointmentController::class,'fetchAppointment']);
-Route::get('countOfAppointment',[AppointmentController::class,'countOfAppointment']);
-Route::get('/getAppointments/{doctorId}',[AppointmentController::class,'getAppointments']);
-Route::get('/updateAppointment',[AppointmentController::class,'updateAppointment']);
+Route::post('bookAppointment', [AppointmentController::class, 'storeAppointment']);
+Route::get('/updateAppointment', [AppointmentController::class, 'updateAppointment']);
 Route::post('/updateFeedback/{appointmentId}/{feedback}', [AppointmentController::class, 'updateFeedback']);
 
-//patient related routes
-// Route::get('storePatient',[PatientController::class,'storePatient']);
-// Route::get('fetchPatient',[PatientController::class,'fetchPatient']);
-Route::get('countOfPatient',[PatientController::class,'countOfPatient']);
+Route::get('/appointment', [AppointmentController::class, 'showAppointment']);
+Route::get('/fetchdoctorName/{date}', [AppointmentController::class, 'fetchdoctorName']);
+Route::get('fetchAppointment', [AppointmentController::class, 'fetchAppointment']);
+Route::get('countOfAppointment', [AppointmentController::class, 'countOfAppointment']);
+Route::get('/getAppointments/{doctorId}', [AppointmentController::class, 'getAppointments']);
+
+
 
 //Doctor Related Routes
-Route::post('storeDoctor',[DoctorController::class,'storeDoctor']);
-Route::get('fetchDoctor',[DoctorController::class,'fetchDoctor']);
-Route::post('updateAvailability',[DoctorController::class,'updateAvailability']);
-Route::get('countOfDoctor',[DoctorController::class,'countOfDoctor']);
-Route::get('fetchDoctorFee/{doctorname}',[DoctorController::class,'fetchDoctorFee']);
-Route::get('/fetchDoctorBasedOnSpecilization/{specilization}',[DoctorController::class,'fetchDoctorBasedOnSpecilization']);
+Route::post('storeDoctor', [DoctorController::class, 'storeDoctor']);
+Route::post('updateDoctor', [DoctorController::class, 'updateDoctor']);
+Route::post('updateAvailability', [DoctorController::class, 'updateAvailability']);
 
-Route::get('/aboutus',function(){
+Route::get('fetchDoctor', [DoctorController::class, 'fetchDoctor']);
+Route::get('/fetchDoctorById/{doctorId}', [DoctorController::class, 'fetchDoctorById']);
+Route::get('countOfDoctor', [DoctorController::class, 'countOfDoctor']);
+Route::get('fetchDoctorFee/{doctorname}', [DoctorController::class, 'fetchDoctorFee']);
+Route::get('/fetchdoctorNameStatus/{date}', [DoctorController::class, 'fetchdoctorNameStatus']);
+Route::get('/fetchDoctorBasedOnSpecilization/{specilization}', [DoctorController::class, 'fetchDoctorBasedOnSpecilization']);
+
+
+Route::get('/aboutus', function () {
     return view('hospital.aboutus');
 });
-
-Route::get('/appointment',[AppointmentController::class,'showAppointment']);
-
-
-// Route::get('/demo',function(){
-//    return view('demo');
-// });
-
-Route::get('/fetchdoctorName/{date}',[AppointmentController::class,'fetchdoctorName']);
-Route::get('/fetchdoctorNameStatus/{date}',[DoctorController::class,'fetchdoctorNameStatus']);
-// Route::get('/updateDoctorStatus/{appointmentId}',[DoctorController::class,'updateDoctorStatus']);

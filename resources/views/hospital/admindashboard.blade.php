@@ -26,6 +26,9 @@
           <li class="nav-item">
             <a class="nav-link anchor bookappointment" aria-current="page" href="{{url('appointment')}}">Book-Appointment</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link anchor" href="{{url('aboutus')}}">Hospital-info</a>
+          </li>
           <li><a class="nav-link anchor" href="logout">Logout</a></li>
         </ul>
       </div>
@@ -64,29 +67,7 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row mt-4 ">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"> </p>
-            <a href="#" class="btn btn-primary"></a>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </div>
-  <!-- <div class="graph-container">
-    <h2>Hospital Management System - Daily Patient Count</h2>
-    <div class="graph-bar">
-      <div class="bar" style="height: 100px;"></div> 
-      <div class="bar" style="height: 120px;"></div>
-      <div class="bar" style="height: 80px;"></div>
-      <div class="bar" style="height: 90px;"></div>
-      <div class="bar" style="height: 110px;"></div>
-    </div>
-    <p class="black">Day 1</p>
-  </div> -->
 
   <!-- patients details -->
   <div class="modal fade patients modal-lg">
@@ -99,7 +80,7 @@
           </button>
         </div>
         <div class="modal-body table-responsive">
-          <table class="table table-stripted table-hover table-bordered">
+          <table class="table table-stripted table-hover table-bordered" id="patientTable">
             <thead class="table-dark">
               <tr>
                 <th>first_name</th>
@@ -107,9 +88,19 @@
                 <th>patient_dob</th>
                 <th>patient_age</th>
                 <th>doctor_name</th>
-                <th>status</th>
+                <th>Remarks</th>
               </tr>
             </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" name="firstname" class="search"></td>
+                <td><input type="text" name="lastname" class="search"></td>
+                <td><input type="text" name="patient_dob" class="search"></td>
+                <td><input type="text" name="patient_age" class="search"></td>
+                <td><input type="text" name="doctor_name" class="search"></td>
+                <td><input type="text" name="remarks" class="search"></td>
+              </tr>
+            </tbody>
             <tbody class="patient_data">
             </tbody>
           </table>
@@ -258,7 +249,7 @@
           </button>
         </div>
         <div class="modal-body table-responsive">
-          <table class="table table-stripted table-hover table-bordered">
+          <table class="table table-stripted table-hover table-bordered appointmentTable">
             <thead class="table-dark">
               <tr>
                 <th>First_Name</th>
@@ -268,10 +259,21 @@
                 <th>Patient_mobile</th>
                 <th>Doctor_name</th>
                 <th>Appointment_date</th>
-                <!-- <th>Appointment_time</th> -->
                 <th>Appointment_status</th>
               </tr>
             </thead>
+            <tbody>
+              <tr>
+                <td><input type="text" name="firstname" class="search"></td>
+                <td><input type="text" name="lastname" class="search"></td>
+                <td><input type="text" name="patient_dob" class="search"></td>
+                <td><input type="text" name="patient_age" class="search"></td>
+                <td><input type="text" name="Patient_mobile" class="search"></td>
+                <td><input type="text" name="doctor_name" class="search"></td>
+                <td><input type="text" name="Appointment_date" class="search"></td>
+                <td><input type="text" name="Appointment_status" class="search"></td>
+              </tr>
+            </tbody>
             <tbody class="appointment_data">
             </tbody>
           </table>
@@ -288,7 +290,142 @@
   </div>
   <script>
     $(document).ready(() => {
+      $(".search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".patient_data tr, .appointment_data tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+
       updateCount_Of_Doctor_Appointments();
+
+      $('.ListOfPatients').on('click', () => {
+        $('.patient_data').empty();
+        $.ajax({
+          url: "{{url('fetchAppointment')}}",
+          type: 'get',
+          success: function(response) {
+            var tr = '';
+            $.each(response, function(index, patient) {
+              tr += '<tr class="data">';
+              tr += '<td>' + patient.patient_first_name + '</td>';
+              if (patient.patient_last_name === null) {
+                tr += '<td>' + " " + '</td>';
+              } else {
+                tr += '<td>' + patient.patient_last_name + '</td>';
+              }
+              tr += '<td>' + patient.patient_dob + '</td>'
+              tr += '<td>' + patient.patient_age + '</td>';
+              tr += '<td>' + patient.doctor_name + '</td>';
+              if (patient.feedback === null) {
+                tr += '<td>' + " " + '</td>';
+              } else {
+                tr += '<td>' + patient.feedback + '</td>';
+              }
+              tr += '</tr>';
+            });
+            $('.patient_data').append(tr);
+          }
+        });
+      });
+
+      $('.ListOfAppointments').on('click', () => {
+        $('.appointment_data').empty();
+        $.ajax({
+          url: "{{url('fetchAppointment')}}",
+          type: 'get',
+          success: function(response) {
+            var tr = '';
+            $.each(response, function(index, appointment) {
+              tr += '<tr>';
+              tr += '<td>' + appointment.patient_first_name + '</td>';
+              if (appointment.patient_last_name === null) {
+                tr += '<td>' + " " + '</td>';
+              } else {
+                tr += '<td>' + appointment.patient_last_name + '</td>';
+              }
+              tr += '<td>' + appointment.patient_dob + '</td>';
+              tr += '<td>' + appointment.patient_age + '</td>';
+              tr += '<td>' + appointment.patient_mobile + '</td>';
+              tr += '<td>' + appointment.doctor_name + '</td>';
+              tr += '<td>' + appointment.appointment_date + '</td>';
+              if (appointment.appointment_status === null) {
+                tr += '<td>' + " " + '</td>';
+              } else {
+                tr += '<td>' + appointment.appointment_status + '</td>';
+              }
+              tr += '</tr>';
+            });
+            $('.appointment_data').append(tr);
+          }
+        })
+      });
+
+      $('#dob').on('change', () => {
+        calculateAge('#dob', '#age', '#dobError');
+      });
+
+      $('.bookappointment').on('click', () => {
+        $.ajax({
+          type: 'get',
+          url: "{{url('fetchDoctor')}}",
+          success: function(response) {
+            $('.doctorContent').empty();
+            var option = '';
+            option += '<option>Choose..</option>';
+            $.each(response, function(index, doctor) {
+              option += '<option value=' + doctor.doctor_name + '>' + doctor.doctor_name + '</option>';
+            });
+            $('.doctorContent').append(option);
+          }
+        });
+      });
+
+      $('#dr').on('change', function() {
+        var doctorname = $('select#dr option:selected').text();
+        $.ajax({
+          url: "{{url('fetchDoctorFee')}}/" + doctorname,
+          type: 'get',
+          success: function(response) {
+            $('#doctor_id').val(response.doctor_id);
+            $('#doctor_fee').val(response.fee);
+          }
+        });
+      });
+
+      $('.ListOfDoctors').on('click', () => {
+        $.ajax({
+          type: 'get',
+          url: "{{url('fetchDoctor')}}",
+          success: function(response) {
+            $('.doctor_data').empty();
+            var div = '';
+            var counter = 0;
+            $.each(response, function(index, doctor) {
+              if (counter % 3 === 0) {
+                div += '<div class="row">';
+              }
+              div += '<div class="col-md-4">';
+              div += '<div class="card black">';
+              div += '<div class="card-body">';
+              div += '<img src="img/doctorlogo.png" alt="" width="50" height="50" class="card-image">';
+              div += '<h5 class="card-title">' + doctor.doctor_name + '</h5>'
+              div += '<p class="card-text">' + doctor.email + '</p>';
+              div += '<p class="card-text">' + doctor.mobile + '</p>';
+              div += '<p class="card-text">' + doctor.specilization + '</p>';
+              div += '</div>';
+              div += '</div>';
+              div += '</div>';
+              if ((counter + 1) % 3 === 0 || (index + 1) === response.length) {
+                div += '</div>';
+                div += '<br>';
+              }
+              counter++;
+            });
+            $('.doctor_data').append(div);
+          }
+        });
+      });
     });
 
     function updateCount_Of_Doctor_Appointments() {
@@ -307,135 +444,6 @@
         }
       });
     }
-
-    $('.ListOfPatients').on('click', () => {
-      $('.patient_data').empty();
-      $.ajax({
-        url: "{{url('fetchAppointment')}}",
-        type: 'get',
-        success: function(response) {
-          var tr = '';
-          $.each(response, function(index, patient) {
-            tr += '<tr>';
-            tr += '<td>' + patient.patient_first_name + '</td>';
-            if (patient.patient_last_name === null) {
-              tr += '<td>' + " " + '</td>';
-            } else {
-              tr += '<td>' + patient.patient_last_name + '</td>';
-            }
-            tr += '<td>' + patient.patient_dob + '</td>'
-            tr += '<td>' + patient.patient_age + '</td>';
-            tr += '<td>' + patient.doctor_name + '</td>';
-            if (patient.appointment_status === null) {
-              tr += '<td>' + " " + '</td>';
-            } else {
-              tr += '<td>' + patient.appointment_status + '</td>';
-            }
-            tr += '</tr>';
-          });
-          $('.patient_data').append(tr);
-        }
-      });
-    });
-    $('.ListOfAppointments').on('click', () => {
-      $('.appointment_data').empty();
-      $.ajax({
-        url: "{{url('fetchAppointment')}}",
-        type: 'get',
-        success: function(response) {
-          var tr = '';
-          $.each(response, function(index, appointment) {
-            tr += '<tr>';
-            tr += '<td>' + appointment.patient_first_name + '</td>';
-            if (appointment.patient_last_name === null) {
-              tr += '<td>' + " " + '</td>';
-            } else {
-              tr += '<td>' + appointment.patient_last_name + '</td>';
-            }
-            tr += '<td>' + appointment.patient_dob + '</td>';
-            tr += '<td>' + appointment.patient_age + '</td>';
-            tr += '<td>' + appointment.patient_mobile + '</td>';
-            tr += '<td>' + appointment.doctor_name + '</td>';
-            tr += '<td>' + appointment.appointment_date + '</td>';
-            // tr += '<td>' + appointment.appointment_time + '</td>';
-            if (appointment.appointment_status === null) {
-              tr += '<td>' + " " + '</td>';
-            } else {
-              tr += '<td>' + appointment.appointment_status + '</td>';
-            }
-            tr += '</tr>';
-          });
-          $('.appointment_data').append(tr);
-        }
-
-      })
-    });
-    $('#dob').on('change', () => {
-      calculateAge('#dob', '#age', '#dobError');
-    });
-    $('.bookappointment').on('click', () => {
-      $.ajax({
-        type: 'get',
-        url: "{{url('fetchDoctor')}}",
-        success: function(response) {
-          $('.doctorContent').empty();
-          var option = '';
-          option += '<option>Choose..</option>';
-          $.each(response, function(index, doctor) {
-            option += '<option value=' + doctor.doctor_name + '>' + doctor.doctor_name + '</option>';
-          });
-          $('.doctorContent').append(option);
-        }
-      });
-    });
-    $('#dr').on('change', function() {
-      var doctorname = $('select#dr option:selected').text();
-      $.ajax({
-        url: "{{url('fetchDoctorFee')}}/" + doctorname,
-        type: 'get',
-        success: function(response) {
-          $('#doctor_id').val(response.doctor_id);
-          $('#doctor_fee').val(response.fee);
-
-        }
-      });
-    });
-
-    $('.ListOfDoctors').on('click', () => {
-      $.ajax({
-        type: 'get',
-        url: "{{url('fetchDoctor')}}",
-        success: function(response) {
-          $('.doctor_data').empty();
-          var div = '';
-          var counter = 0;
-
-          $.each(response, function(index, doctor) {
-            if (counter % 3 === 0) {
-              div += '<div class="row">';
-            }
-            div += '<div class="col-md-4">';
-            div += '<div class="card black">';
-            div += '<div class="card-body">';
-            div += '<img src="img/doctorlogo.png" alt="" width="50" height="50" class="card-image">';
-            div += '<h5 class="card-title">' + doctor.doctor_name + '</h5>'
-            div += '<p class="card-text">' + doctor.email + '</p>';
-            div += '<p class="card-text">' + doctor.mobile + '</p>';
-            div += '<p class="card-text">' + doctor.specilization + '</p>';
-            div += '</div>';
-            div += '</div>';
-            div += '</div>';
-            if ((counter + 1) % 3 === 0 || (index + 1) === response.length) {
-              div += '</div>';
-              div += '<br>';
-            }
-            counter++;
-          });
-
-          $('.doctor_data').append(div);
-        }
-      });
-    });
   </script>
 </body>
 @endsection

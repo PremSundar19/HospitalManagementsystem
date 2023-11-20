@@ -92,35 +92,7 @@
             backface-visibility: visible;
         }
 
-        .graph-container {
-            width: 80%;
-            max-width: 800px;
-            margin: 50px auto;
-            background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .graph-bar {
-            background-color: #3498db;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        .bar {
-            display: inline-block;
-            height: 150px;
-            width: 50px;
-            margin-right: 10px;
-            background-color: #2ecc71;
-        }
-
-        .bar:nth-child(even) {
-            background-color: #e74c3c;
-        }
-
+      
         h2 {
             margin-bottom: 20px;
             color: #333;

@@ -17,7 +17,7 @@ class DoctorController extends Controller
             'doctorname' => 'required|string|max:255|regex:/^[a-zA-Z.\s]+$/',
             'email' => 'required|unique:doctor,email',
             'mobile' => 'required',
-            'specilization' => 'required',
+            'specilization' => 'required|not_in:Choose...',
             'password' => 'required',
         ]);
         $data = $request->input();
@@ -58,12 +58,17 @@ class DoctorController extends Controller
     {
         return DB::select('SELECT doctor_name,status FROM doctor WHERE appoinmentDate=?',[$date]);
     }
-    public function updateDoctorStatus($appointmentId){
-        $appointment = DB::select('SELECT appointment_date, doctor_id FROM appointment WHERE appointment_id=?',[$appointmentId]);
-        $appoinmentDate  = $appointment[0]->appointment_date;
-        $doctorId  = $appointment[0]->doctor_id;
-        $status = 1;
-        DB::update('UPDATE doctor SET appoinmentDate=?, status=? WHERE doctor_id=?',[$appoinmentDate,$status,$doctorId]);
-
+    public function fetchDoctorById($doctorId){
+        return DB::select('SELECT * FROM doctor WHERE doctor_id=?',[$doctorId]);
+    }
+    public function updateDoctor(Request $request){
+        $data = $request->input();
+        $doctor_name = $data['doctorname'];
+        $email = $data['email'];
+        $mobile = $data['mobile'];
+        $specilization = $data['specilization'];
+        $doctor_id = $data['drId'];
+        DB::update('UPDATE doctor SET doctor_name=?, email=?, mobile=?, specilization=? WHERE doctor_id=?',[$doctor_name,$email,$mobile,$specilization,$doctor_id]);
+        return redirect('doctordashboard')->with('message', 'Profile Updated Successfully');
     }
 }

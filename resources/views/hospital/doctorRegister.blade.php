@@ -17,7 +17,6 @@
                     }, 4000);
                 </script>
                 @endif
-                <!-- <div class="form"> -->
                 <form action="{{url('storeDoctor')}}" class="appointmentform black" method="post">
                     @csrf
                     <h5>Register Form</h5>
@@ -45,17 +44,13 @@
                     </div>
                     <div class="form-group">
                         <label for="specilization" class="form-label">Specilization</label>
-                        <select name="specilization" id="specilization" class="form-select">
+                        <select name="specilization" id="specilization" class="form-select @error('specilization') is-invalid @enderror">
                             <option>Choose...</option>
                             <option value="Cardiology">Cardiology</option>
                             <option value="Dermatology">Dermatology</option>
                             <option value="Neurologist">Neurologist</option>
                             <option value="Dermatologist">Dermatologist</option>
-                            <!-- <option value="Psychiatry">Psychiatry</option> -->
-                            <!-- <option value="Endocrinologist">Endocrinologist</option> -->
                             <option value="Accident and emergency medicine">Accident and emergency medicine</option>
-                            <!-- <option value="Dentist">Dentist</option> -->
-                            <!-- <option value="Immunology">Immunology</option> -->
                         </select>
                         @error('specilization')
                         <span class="text-danger">{{$message}}</span>
@@ -73,7 +68,6 @@
                         <input type="submit" value="Register" class="btn btn-primary btn-xs py-1">
                     </div>
                 </form>
-                <!-- </div> -->
             </div>
         </div>
     </div>

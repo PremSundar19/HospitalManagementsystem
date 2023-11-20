@@ -13,10 +13,7 @@ class HospitalController extends Controller
 {
     public function adminDashboard()
     {
-        if (session('admin_id')) {
-            return view('hospital.admindashboard');
-        }
-        return $this->index();
+        return session('admin_id') ? view('hospital.admindashboard') : redirect('index');
     }
 
     public function userDashboard()
@@ -26,11 +23,7 @@ class HospitalController extends Controller
 
     public function doctorDashboard()
     {
-        if (session('doctor_id')) {
-            return view('hospital.doctordashboard');
-        }
-    
-        return $this->index();
+        return session('doctor_id') ? view('hospital.doctordashboard') : redirect('index');
     }
     public function index()
     {
@@ -53,15 +46,12 @@ class HospitalController extends Controller
         $request->validate([
             'email' => 'required',
             'password' => 'required',
+            'type'=>'required|not_in:Choose..',
         ]);
 
         $email = $request->email;
         $password = $request->password;
         $type = $request->type;
-        if ($type === "Choose..") {
-            return redirect('index')->with('message', 'Choose valid type');
-        }
-
         if ($type === "Admin" && $email === "admin123@gmail.com" && $password === "Admin@123") {
             Session::put('admin_id', 1);
             return $this->adminDashboard();
@@ -71,6 +61,7 @@ class HospitalController extends Controller
             if ($doctor) {
                 if (hash::check($password, $doctor->password)) {
                     Session::put('doctor_id', $doctor->doctor_id);
+                    Session::put('doctor_name',$doctor->doctor_name);
                     return $this->doctorDashboard();
                 }
             }
