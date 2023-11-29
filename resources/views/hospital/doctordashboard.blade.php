@@ -51,6 +51,7 @@
       </div>
     </div>
   </nav>
+   
   <!-- doctor Profile  -->
   <div class="modal fade modal-lg" id="doctorProfileModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -103,6 +104,7 @@
       </div>
     </div>
   </div>
+
   <!-- doctor Edit Profile  -->
   <div class="modal fade" id="doctorEditProfileModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -195,13 +197,14 @@
       </div>
     </div>
   </div>
+
   <!-- patientmodal -->
   <div class="modal fade modal-lg" id="patientModal" tabindex="-1" role="dialog" aria-labelledby="patientmodal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title black" id="patientmodal">Patient records</h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <button type="button" class="close patientmodalClose" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -245,7 +248,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title black" id="apppointment">Appointments</h5>
-          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <button type="button" class="close appointmentModalClose" data-bs-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -276,6 +279,7 @@
       </div>
     </div>
   </div>
+
   <!-- doctor Availability -->
   <div class="modal fade" id="availabilityModal" tabindex="-1" role="dialog" aria-labelledby="doctorModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -324,16 +328,13 @@
     </div>
   </div>
 
-
   <!-- Page Content -->
   <div class="container mt-5">
     <h1 class="mt-5">Beta Hospital</h1>
     <p>Beta Hospital in Chennai has a supportive and friendly staff, and the latest medical know-how to help patients. The clinic abides by all the necessary safety protocols, including Covid-19 precautionary measures. The doctor and team offer world-class care and guidance, always putting their patients first.</p>
   </div>
   <?php
-
   use Illuminate\Support\Facades\Session;
-
   $doctorId = Session::get('doctor_id');
   $doctor_name = Session::get('doctor_name');
   ?>
@@ -382,7 +383,6 @@
         type: 'GET',
         dataType: 'json',
         success: function(response) {
-          console.log(response);
           displayAppointment(response);
           displayPatients(response);
         }
@@ -396,7 +396,6 @@
       $.each(appointments, function(index, appointment) {
         $('#doctor_name').val(appointment.doctor_name);
         $('#doctor_id').val(appointment.doctor_id);
-
         tr += '<tr>';
         tr += '<td>' + appointment.patient_first_name + '</td>';
         if (appointment.patient_last_name === null) {
@@ -405,7 +404,6 @@
           tr += '<td>' + appointment.patient_last_name + '</td>';
         }
         tr += '<td>' + appointment.appointment_date + '</td>';
-        // tr += '<td>' + appointment.appointment_time + '</td>';
         tr += '<td>' + appointment.appointment_status + '</td>';
         if (appointment.appointment_status === "pending") {
           tr += '<td><div class="d-flex">';
@@ -417,7 +415,6 @@
       });
       $('.appointments_data').append(tr);
     }
-
 
     function displayPatients(appointments) {
       $('.patients_data').empty();
@@ -435,7 +432,6 @@
           tr += '<td>' + appointment.patient_age + '</td>';
           tr += '<td>' + appointment.patient_mobile + '</td>';
           tr += '<td>' + appointment.appointment_date + '</td>';
-          // tr += '<td>' + appointment.appointment_time + '</td>';
           if (appointment.feedback === null) {
             tr += '<td>' + '<input type="text" name="feedback"  appointmentId="' + appointment.appointment_id + '" required>' + '</td>';
           } else {
